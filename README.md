@@ -24,6 +24,10 @@ Since the GTX 580 GPU has only 3GB of memory, a single GPU could not store the e
 
 ![AlexNet](./assets/AlexNet.png)
 
+<center>
+    <b>AlexNet Architecture</b>
+</center>
+
 
 
 ### GoogLeNet
@@ -41,6 +45,30 @@ We propose a deep convolutional neural network architecture codenamed Inception,
 [[Paper]](http://arxiv.org/abs/1409.4842)[[Code]](./models/googlenet.py)
 
 ![GoogLeNet](./assets/GoogLeNet.png)
+
+<center>
+    <b>GoogLeNet Architecture</b>
+</center>
+
+
+
+### MobileNetV1
+
+*MobileNets: Efficient Convolutional Neural Networks for Mobile Vision  Applications*
+
+#### Authors
+
+Andrew G. Howard, Menglong Zhu, Bo Chen, Dmitry Kalenichenko, Weijun Wang, Tobias Weyand, Marco Andreetto, Hartwig Adam
+
+#### Abstract
+
+We present a class of efficient models called MobileNets for mobile and embedded vision applications. MobileNets are based on a streamlined architecture that uses depthwise separable convolutions to build light weight deep neural networks. We introduce two simple global hyperparameters that efficiently trade off between latency and accuracy. These hyper-parameters allow the model builder to choose the right sized model for their application based on the constraints of the problem. We present extensive experiments on resource and accuracy tradeoffs and show strong performance compared to other popular models on ImageNet classification. We then demonstrate the effectiveness of MobileNets across a wide range of applications and use cases including object detection, finegrain classification, face attributes and large scale geo-localization.
+
+[[Paper]](http://arxiv.org/abs/1704.04861)[[Code]](./models/mobilenetv1.py)
+
+![MobileNetV1](./assets/MobileNetV1-architecture.png)
+
+
 
 ### ResNet
 
@@ -66,5 +94,27 @@ Deeper neural networks are more difficult to train. We present a residual learni
 
 <center>
     <b>ResNet Variants</b>
+</center>
+
+
+
+### VGGNet
+
+*Very Deep Convolutional Networks for Large-Scale Image Recognition*
+
+#### Authors
+
+Karen Simonyan, Andrew Zisserman
+
+#### Abstract
+
+In this work we investigate the effect of the convolutional network depth on its accuracy in the large-scale image recognition setting. Our main contribution is a thorough evaluation of networks of increasing depth using an architecture with very small (3 × 3) convolution filters, which shows that a significant improvement on the prior-art configurations can be achieved by pushing the depth to 16–19 weight layers. These findings were the basis of our ImageNet Challenge 2014 submission, where our team secured the first and the second places in the localisation and classification tracks respectively. We also show that our representations generalise well to other datasets, where they achieve state-of-the-art results. We have made our two best-performing ConvNet models publicly available to facilitate further research on the use of deep visual representations in computer vision.
+
+[[Paper]](http://arxiv.org/abs/1409.1556)[[Code]](./models/vgg.py)
+
+![VGG Net Variants](./assets/VGG-Net-Variants.png)
+
+<center>
+    <b>VGGNet Variants</b>
 </center>
 
