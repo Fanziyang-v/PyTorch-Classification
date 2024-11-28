@@ -68,6 +68,10 @@ We present a class of efficient models called MobileNets for mobile and embedded
 
 ![MobileNetV1](./assets/MobileNetV1-architecture.png)
 
+<center>
+    <b>MobileNetV1 Architecture</b>
+</center>
+
 
 
 ### ResNet
