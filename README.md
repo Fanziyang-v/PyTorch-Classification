@@ -124,6 +124,26 @@ In this work we investigate the effect of the convolutional network depth on its
 
 
 
+### ViT
+
+*An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale*
+
+#### Authors
+
+Alexey Dosovitskiy, Lucas Beyer, Alexander Kolesnikov, Dirk Weissenborn, Xiaohua Zhai, Thomas Unterthiner, Mostafa Dehghani, Matthias Minderer, Georg Heigold, Sylvain Gelly, Jakob Uszkoreit, Neil Houlsby
+
+#### Abstract
+
+While the Transformer architecture has become the de-facto standard for natural language processing tasks, its applications to computer vision remain limited. In vision, attention is either applied in conjunction with convolutional networks, or used to replace certain components of convolutional networks while keeping their overall structure in place. We show that this reliance on CNNs is not necessary and a pure transformer applied directly to sequences of image patches can perform very well on image classification tasks. When pre-trained on large amounts of data and transferred to multiple mid-sized or small image recognition benchmarks (ImageNet, CIFAR-100, VTAB, etc.), Vision Transformer (ViT) attains excellent results compared to state-of-the-art convolutional networks while requiring substantially fewer computational resources to train.
+
+[[Paper]](http://arxiv.org/abs/2010.11929)[[Code]](./models/vit.py)
+
+The code is based on the full PyTorch [[implementation]](https://github.com/lucidrains/vit-pytorch/blob/main/vit_pytorch/vit.py) for ViT and [[implementation]](https://github.com/hyunwoongko/transformer) for Transformer.
+
+![ViT](./assets/ViT.png)
+
+
+
 ### Xception
 
 *Xception: Deep Learning with Depthwise Separable Convolutions*
