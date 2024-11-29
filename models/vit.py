@@ -229,3 +229,45 @@ class MultiHeadAttention(nn.Module):
         batch_size, num_head, seq_length, d_head = x.size()
         d_model = num_head * d_head
         return x.transpose(1, 2).contiguous().view(batch_size, seq_length, d_model)
+
+
+def vit_base(image_size: int | tuple[int, int], num_channels: int = 3) -> ViT:
+    return ViT(
+        image_size=image_size,
+        patch_size=16,
+        num_channels=num_channels,
+        d_model=768,
+        d_hidden=3072,
+        num_blocks=12,
+        num_head=12,
+        drop_prob=0.5,
+        emb_drop_prob=0.5,
+    )
+
+
+def vit_large(image_size: int | tuple[int, int], num_channels: int = 3) -> ViT:
+    return ViT(
+        image_size=image_size,
+        patch_size=16,
+        num_channels=num_channels,
+        d_model=1024,
+        d_hidden=4096,
+        num_blocks=24,
+        num_head=16,
+        drop_prob=0.5,
+        emb_drop_prob=0.5,
+    )
+
+
+def vit_huge(image_size: int | tuple[int, int], num_channels: int = 3) -> ViT:
+    return ViT(
+        image_size=image_size,
+        patch_size=14,
+        num_channels=num_channels,
+        d_model=1280,
+        d_hidden=5120,
+        num_blocks=32,
+        num_head=16,
+        drop_prob=0.5,
+        emb_drop_prob=0.5,
+    )
