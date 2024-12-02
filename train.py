@@ -29,7 +29,7 @@ parser.add_argument(
     help="momentum term for SGD optimizer. defaults to 0.9",
 )
 parser.add_argument(
-    "--weight_decy",
+    "--weight_decay",
     type=float,
     default=5e-4,
     help="weight decay coefficient. defaults to 0.0005",
@@ -152,7 +152,7 @@ else:
 # ================ Model - END ================
 
 
-# ================ Traing - START ================
+# ================ Training - START ================
 
 # loss function
 criterion = nn.CrossEntropyLoss().to(device)
