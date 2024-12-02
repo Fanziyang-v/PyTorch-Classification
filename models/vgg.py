@@ -11,19 +11,38 @@ from torch import nn, Tensor
 
 
 class VGG(nn.Module):
+    """VGG Net.
+
+    Unlike the original VGG Net, a global average pooling is applied
+    after the fifth VGG block and before the first fully connected layer,
+    resulting in the spatial dimension of the output feature map is 1x1
+
+    """
+
     def __init__(
         self,
         num_classes: int,
         layers: list[int],
         use_batchnorm: bool = False,
     ) -> None:
+        """Initialize a VGG Net with optional batch normalization layer.
+
+        Args:
+            num_classes (int): number of classes of input images.
+            layers (list[int]): number of conv layers in each VGG block.
+            use_batchnorm (bool, optional): batchnorm will be applided if use_batchnorm is True. Defaults to False.
+        """
         super(VGG, self).__init__()
+        # Unlike the original VGG Net, a global average pooling is applied
+        # after the fifth VGG block and before the first fully connected layer,
+        # resulting in the spatial dimension of the output feature map is 1x1
         self.model = nn.Sequential(
             VGGBlock(3, 64, layers[0], use_batchnorm),
             VGGBlock(64, 128, layers[1], use_batchnorm),
             VGGBlock(128, 256, layers[2], use_batchnorm),
             VGGBlock(256, 512, layers[3], use_batchnorm),
             VGGBlock(512, 512, layers[4], use_batchnorm),
+            nn.AdaptiveAvgPool2d((1, 1)),
             nn.Flatten(),
             nn.Linear(512, 4096),
             nn.ReLU(inplace=True),
@@ -100,17 +119,33 @@ class VGGBlock(nn.Module):
         return self.block(x)
 
 
-def vgg11(num_classes: int = 10, use_batchnorm: bool = False) -> VGG:
-    return VGG(num_classes, [1, 1, 2, 2, 2], use_batchnorm)
+def vgg11(num_classes: int = 10) -> VGG:
+    return VGG(num_classes, [1, 1, 2, 2, 2])
 
 
-def vgg13(num_classes: int = 10, use_batchnorm: bool = False) -> VGG:
-    return VGG(num_classes, [2, 2, 2, 2, 2], use_batchnorm)
+def vgg13(num_classes: int = 10) -> VGG:
+    return VGG(num_classes, [2, 2, 2, 2, 2])
 
 
-def vgg16(num_classes: int = 10, use_batchnorm: bool = False) -> VGG:
-    return VGG(num_classes, [2, 2, 3, 3, 3], use_batchnorm)
+def vgg16(num_classes: int = 10) -> VGG:
+    return VGG(num_classes, [2, 2, 3, 3, 3])
 
 
-def vgg19(num_classes: int = 10, use_batchnorm: bool = False) -> VGG:
-    return VGG(num_classes, [2, 2, 4, 4, 4], use_batchnorm)
+def vgg19(num_classes: int = 10) -> VGG:
+    return VGG(num_classes, [2, 2, 4, 4, 4])
+
+
+def vgg11_bn(num_classes: int = 10) -> VGG:
+    return VGG(num_classes, [1, 1, 2, 2, 2], use_batchnorm=True)
+
+
+def vgg13_bn(num_classes: int = 10) -> VGG:
+    return VGG(num_classes, [2, 2, 2, 2, 2], use_batchnorm=True)
+
+
+def vgg16_bn(num_classes: int = 10) -> VGG:
+    return VGG(num_classes, [2, 2, 3, 3, 3], use_batchnorm=True)
+
+
+def vgg19_bn(num_classes: int = 10) -> VGG:
+    return VGG(num_classes, [2, 2, 4, 4, 4], use_batchnorm=True)
