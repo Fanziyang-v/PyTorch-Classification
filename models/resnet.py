@@ -2,7 +2,9 @@
 PyTorch implementation for ResNet.
 
 For more details, see: 
-[1] Kaiming He et.al. Deep Residual Learning for Image Recognition. http://arxiv.org/abs/1512.03385
+[1] Kaiming He et al. 
+    Deep Residual Learning for Image Recognition. 
+    http://arxiv.org/abs/1512.03385
 """
 
 from torch import nn, Tensor
@@ -13,7 +15,6 @@ class ResNet(nn.Module):
 
     def __init__(
         self,
-        num_channels: int,
         num_classes: int,
         layers: list[int],
         channels: list[int],
@@ -21,11 +22,16 @@ class ResNet(nn.Module):
     ) -> None:
         super(ResNet, self).__init__()
         self.in_channels = 64
-        self.conv1 = nn.Conv2d(
-            num_channels, 64, kernel_size=7, stride=2, padding=3, bias=False
-        )
+        # the first 7x7 conv with stride of 2 is replaced by three 3x3 conv
+        self.conv1 = _conv3x3(3, 64, stride=2)
         self.bn1 = nn.BatchNorm2d(64)
-        self.relu = nn.ReLU(inplace=True)
+        self.relu1 = nn.ReLU(inplace=True)
+        self.conv2 = _conv3x3(64, 64)
+        self.bn2 = nn.BatchNorm2d(64)
+        self.relu2 = nn.ReLU(inplace=True)
+        self.conv3 = _conv3x3(64, 64)
+        self.bn3 = nn.BatchNorm2d(64)
+        self.relu3 = nn.ReLU(inplace=True)
         self.maxpool = nn.MaxPool2d(kernel_size=3, stride=2, padding=1)
         self.layer1 = self._make_layer(channels[0], layers[0], block)
         self.layer2 = self._make_layer(channels[1], layers[1], block, stride=2)
@@ -37,7 +43,13 @@ class ResNet(nn.Module):
     def forward(self, x: Tensor):
         out = self.conv1(x)
         out = self.bn1(out)
-        out = self.relu(out)
+        out = self.relu1(out)
+        out = self.conv2(out)
+        out = self.bn2(out)
+        out = self.relu2(out)
+        out = self.conv3(out)
+        out = self.bn3(out)
+        out = self.relu3(out)
         out = self.maxpool(out)
         out = self.layer1(out)
         out = self.layer2(out)
@@ -203,31 +215,21 @@ def _conv3x3(in_channels: int, out_channels: int, stride: int = 1) -> nn.Conv2d:
     )
 
 
-def resnet18(num_channels: int = 3, num_classes: int = 1000) -> ResNet:
-    return ResNet(
-        num_channels, num_classes, [2, 2, 2, 2], [64, 128, 256, 512], ResidualBlock
-    )
+def resnet18(num_classes: int = 10) -> ResNet:
+    return ResNet(num_classes, [2, 2, 2, 2], [64, 128, 256, 512], ResidualBlock)
 
 
-def resnet34(num_channels: int = 3, num_classes: int = 1000) -> ResNet:
-    return ResNet(
-        num_channels, num_classes, [3, 4, 6, 3], [64, 128, 256, 512], ResidualBlock
-    )
+def resnet34(num_classes: int = 10) -> ResNet:
+    return ResNet(num_classes, [3, 4, 6, 3], [64, 128, 256, 512], ResidualBlock)
 
 
-def resnet50(num_channels: int = 3, num_classes: int = 1000) -> ResNet:
-    return ResNet(
-        num_channels, num_classes, [3, 4, 6, 3], [64, 128, 256, 512], Bottleneck
-    )
+def resnet50(num_classes: int = 10) -> ResNet:
+    return ResNet(num_classes, [3, 4, 6, 3], [64, 128, 256, 512], Bottleneck)
 
 
-def resnet101(num_channels: int = 3, num_classes: int = 1000) -> ResNet:
-    return ResNet(
-        num_channels, num_classes, [3, 4, 23, 3], [64, 128, 256, 512], Bottleneck
-    )
+def resnet101(num_classes: int = 10) -> ResNet:
+    return ResNet(num_classes, [3, 4, 23, 3], [64, 128, 256, 512], Bottleneck)
 
 
-def resnet152(num_channels: int = 3, num_classes: int = 1000) -> ResNet:
-    return ResNet(
-        num_channels, num_classes, [3, 8, 36, 3], [64, 128, 256, 512], Bottleneck
-    )
+def resnet152(num_classes: int = 10) -> ResNet:
+    return ResNet(num_classes, [3, 8, 36, 3], [64, 128, 256, 512], Bottleneck)
