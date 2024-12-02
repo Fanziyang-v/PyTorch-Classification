@@ -2,7 +2,9 @@
 PyTorch implementation for GoogLeNet.
 
 For more details: see: 
-[1] Christian Szegedy et.al Going Deeper with Convolutions. http://arxiv.org/abs/1409.4842
+[1] Christian Szegedy et al.
+    Going Deeper with Convolutions.
+    http://arxiv.org/abs/1409.4842
 
 """
 
@@ -12,24 +14,27 @@ from torch import Tensor
 
 
 class GoogLeNet(nn.Module):
-    """GoogLeNet."""
+    """GoogLeNet.
 
-    def __init__(
-        self, num_channels: int, num_classes: int, use_aux: bool = False
-    ) -> None:
-        """Initialize GoogLeNet.
+    Unlike the original GoogLeNet, the first 7x7 conv with stride of 2 is replaced by three 3x3 conv.
+    Also in this implementation, batchnorm layer will be applied after each conv layer and before relu nonlinearity.
+    """
 
-        Args:
-            num_channels(int): number of channels of input images.
-            num_classes(int): number of classes.
-            use_aux(bool): use auxiliary classifiers if use_aux is True.
-        """
+    def __init__(self, num_classes: int, use_aux: bool = False) -> None:
         super(GoogLeNet, self).__init__()
-        self.conv1 = nn.Conv2d(num_channels, 64, kernel_size=7, stride=2, padding=3)
-        self.relu1 = nn.ReLU(inplace=True)
+        self.conv1_1 = nn.Conv2d(3, 64, kernel_size=3, stride=2, padding=1, bias=False)
+        self.bn1_1 = nn.BatchNorm2d(64)
+        self.relu1_1 = nn.ReLU(inplace=True)
+        self.conv1_2 = nn.Conv2d(64, 64, kernel_size=3, padding=1, bias=False)
+        self.bn1_2 = nn.BatchNorm2d(64)
+        self.relu1_2 = nn.ReLU(inplace=True)
+        self.conv1_3 = nn.Conv2d(64, 64, kernel_size=3, padding=1, bias=False)
+        self.bn1_3 = nn.BatchNorm2d(64)
+        self.relu1_3 = nn.ReLU(inplace=True)
         self.pool1 = nn.MaxPool2d(kernel_size=3, stride=2, padding=1)
 
-        self.conv2 = nn.Conv2d(64, 192, kernel_size=3, stride=1, padding=1)
+        self.conv2 = nn.Conv2d(64, 192, kernel_size=3, padding=1, bias=False)
+        self.bn2 = nn.BatchNorm2d(192)
         self.relu2 = nn.ReLU(inplace=True)
         self.pool2 = nn.MaxPool2d(kernel_size=3, stride=2, padding=1)
 
@@ -54,6 +59,7 @@ class GoogLeNet(nn.Module):
             self.aux1 = nn.Sequential(
                 nn.AvgPool2d(kernel_size=5, stride=3),
                 nn.Conv2d(512, 128, kernel_size=1),
+                nn.BatchNorm2d(128),
                 nn.ReLU(inplace=True),
                 nn.Flatten(),
                 nn.Linear(2048, 1024),
@@ -64,6 +70,7 @@ class GoogLeNet(nn.Module):
             self.aux2 = nn.Sequential(
                 nn.AvgPool2d(kernel_size=5, stride=3),
                 nn.Conv2d(528, 128, kernel_size=1),
+                nn.BatchNorm2d(128),
                 nn.ReLU(inplace=True),
                 nn.Flatten(),
                 nn.Linear(2048, 1024),
@@ -73,10 +80,15 @@ class GoogLeNet(nn.Module):
         else:
             self.aux1 = nn.Identity()
             self.aux2 = nn.Identity()
+        self._init_weights()
 
     def forward(self, images: Tensor):
-        out = self.conv1(images)
-        out = self.relu1(out)
+        out = self.conv1_1(images)
+        out = self.relu1_1(out)
+        out = self.conv1_2(out)
+        out = self.relu1_2(out)
+        out = self.conv1_3(out)
+        out = self.relu1_3(out)
         out = self.pool1(out)
 
         out = self.conv2(out)
@@ -106,6 +118,17 @@ class GoogLeNet(nn.Module):
         out = self.fc(out)
         return out, out_aux1, out_aux2
 
+    def _init_weights(self) -> None:
+        for m in self.modules():
+            if isinstance(m, nn.Conv2d):
+                nn.init.kaiming_normal_(m.weight, nonlinearity="relu")
+            elif isinstance(m, nn.Linear):
+                nn.init.kaiming_normal_(m.weight, nonlinearity="relu")
+                nn.init.constant_(m.bias, 0)
+            elif isinstance(m, nn.BatchNorm2d):
+                nn.init.constant_(m.weight, 1)
+                nn.init.constant_(m.bias, 0)
+
 
 class Inception(nn.Module):
     """Inception Module in GoogLeNet."""
@@ -118,29 +141,55 @@ class Inception(nn.Module):
         c3: tuple[int, int],
         c4: int,
     ) -> None:
-        """Initialize an Inception Module."""
         super(Inception, self).__init__()
-        self.p1_1 = nn.Conv2d(in_channels, c1, kernel_size=1, stride=1)
+        # branch 1 (1x1 conv)
+        self.p1_1 = nn.Conv2d(in_channels, c1, kernel_size=1, bias=False)
+        self.bn1_1 = nn.BatchNorm2d(c1)
         self.relu1_1 = nn.ReLU(inplace=True)
 
-        self.p2_1 = nn.Conv2d(in_channels, c2[0], kernel_size=1, stride=1)
+        # branch 2 (1x1 conv - 3x3 conv)
+        self.p2_1 = nn.Conv2d(in_channels, c2[0], kernel_size=1, bias=False)
+        self.bn2_1 = nn.BatchNorm2d(c2[0])
         self.relu2_1 = nn.ReLU(inplace=True)
-        self.p2_2 = nn.Conv2d(c2[0], c2[1], kernel_size=3, stride=1, padding=1)
+        self.p2_2 = nn.Conv2d(c2[0], c2[1], kernel_size=3, padding=1, bias=False)
+        self.bn2_2 = nn.BatchNorm2d(c2[1])
         self.relu2_2 = nn.ReLU(inplace=True)
 
-        self.p3_1 = nn.Conv2d(in_channels, c3[0], kernel_size=1, stride=1)
+        # branch 3(1x1 conv - 5x5 conv)
+        self.p3_1 = nn.Conv2d(in_channels, c3[0], kernel_size=1, bias=False)
+        self.bn3_1 = nn.BatchNorm2d(c3[0])
         self.relu3_1 = nn.ReLU(inplace=True)
-        self.p3_2 = nn.Conv2d(c3[0], c3[1], kernel_size=5, stride=1, padding=2)
+        self.p3_2 = nn.Conv2d(c3[0], c3[1], kernel_size=5, padding=2, bias=False)
+        self.bn3_2 = nn.BatchNorm2d(c3[1])
         self.relu3_2 = nn.ReLU(inplace=True)
 
-        self.p4_1 = nn.MaxPool2d(kernel_size=3, stride=1, padding=1)
-        self.p4_2 = nn.Conv2d(in_channels, c4, kernel_size=1, stride=1)
+        # branch 4(maxpool - 1x1 conv)
+        self.p4_1 = nn.MaxPool2d(kernel_size=3, padding=1)
+        self.p4_2 = nn.Conv2d(in_channels, c4, kernel_size=1, bias=False)
+        self.bn4_2 = nn.BatchNorm2d(c3[0])
         self.relu4_2 = nn.ReLU(inplace=True)
 
-    def forward(self, x: Tensor) -> Tensor:
-        """Forward pass in Inception Module."""
-        out1 = self.relu1_1(self.p1_1(x))
-        out2 = self.relu2_2(self.p2_2(self.relu2_1(self.p2_1(x))))
-        out3 = self.relu3_2(self.p3_2(self.relu3_1(self.p3_1(x))))
-        out4 = self.relu4_2(self.p4_2(self.p4_1(x)))
+    def forward(self, x: Tensor):
+        out1 = self.p1_1(x)
+        out1 = self.bn1_1(out1)
+        out1 = self.relu1_1(out1)
+
+        out2 = self.p2_1(x)
+        out2 = self.bn2_1(out2)
+        out2 = self.relu2_1(out2)
+        out2 = self.p2_2(out2)
+        out2 = self.bn2_2(out2)
+        out2 = self.relu2_2(out2)
+
+        out3 = self.p3_1(x)
+        out3 = self.bn3_1(out3)
+        out3 = self.relu3_1(out3)
+        out3 = self.p3_2(out3)
+        out3 = self.bn3_2(out3)
+        out3 = self.relu3_2(out3)
+
+        out4 = self.p4_1(x)
+        out4 = self.p4_2(out4)
+        out4 = self.bn4_2(out4)
+        out4 = self.relu4_2(out4)
         return torch.cat([out4, out3, out2, out1], dim=1)
