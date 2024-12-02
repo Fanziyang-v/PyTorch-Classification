@@ -2,7 +2,8 @@
 PyTorch implementation for MobileNetV1.
 
 For more details, see:
-[1] Andrew G. Howard et.al. MobileNets: Efficient Convolutional Neural Networks for Mobile Vision Applications. 
+[1] Andrew G. Howard et al.
+    MobileNets: Efficient Convolutional Neural Networks for Mobile Vision Applications. 
     http://arxiv.org/abs/1704.04861
 """
 
@@ -12,14 +13,10 @@ from torch import nn, Tensor
 class MobileNetV1(nn.Module):
     """MobileNet V1."""
 
-    def __init__(self, num_channles: int, num_classes: int) -> None:
+    def __init__(self, num_classes: int) -> None:
         super(MobileNetV1, self).__init__()
-        self.conv1 = nn.Conv2d(num_channles, 32, kernel_size=3, stride=2, padding=1)
-        self.bn1 = nn.BatchNorm2d(32)
-        self.relu1 = nn.ReLU(inplace=True)
-
         self.model = nn.Sequential(
-            nn.Conv2d(num_channles, 32, kernel_size=3, stride=2, padding=1),
+            nn.Conv2d(3, 32, kernel_size=3, stride=2, padding=1),
             nn.BatchNorm2d(32),
             nn.ReLU(inplace=True),
             DepthwiseSaparableConv2d(32, 64, kernel_size=3, padding=1),
@@ -55,16 +52,6 @@ class DepthwiseSaparableConv2d(nn.Module):
         padding: int = 0,
         dilation: int = 1,
     ) -> None:
-        """Initialize a depthwise separable convolution layer.
-
-        Args:
-            in_channels (int): number of channels of input feature map.
-            out_channels (int): number of channels of output feature map.
-            kernel_size (int, optional): kernel size.
-            stride (int, optional): stride of convolution. Defaults to 1.
-            padding (int, optional): number of pixels padding. Defaults to 0.
-            dilation (int, optional): dilation rate. Defaults to 1.
-        """
         super(DepthwiseSaparableConv2d, self).__init__()
         # depthwise convolution
         self.dw_conv = nn.Conv2d(
@@ -80,9 +67,7 @@ class DepthwiseSaparableConv2d(nn.Module):
         self.relu1 = nn.ReLU(inplace=True)
 
         # pointwise convolution
-        self.pw_conv = nn.Conv2d(
-            in_channels, out_channels, kernel_size=1, stride=1, padding=0
-        )
+        self.pw_conv = nn.Conv2d(in_channels, out_channels, kernel_size=1)
         self.bn2 = nn.BatchNorm2d(out_channels)
         self.relu2 = nn.ReLU(inplace=True)
 
