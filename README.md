@@ -1,5 +1,61 @@
 # Classification in PyTorch
 
+Here I implement a series of classification networks in PyTorch for fun, and I train and test the networks on CIFAR-10 and CIFAR-100 dataset. For simplicity, I don't use complex training tricks and use nearly same hyper parameters and training method to train the networks.
+
+
+
+## Dataset
+
+The dataset for training and testing is CIFAR, which can be directly obtained from https://www.cs.toronto.edu/~kriz/cifar.html. The following is the dataset description copied from the website.
+
+**CIFAR-10**.
+
+The CIFAR-10 dataset consists of **60000** 32x32 colour images in **10 classes**, with **6000 images per class**. There are **50000 training images and 10000 test images**. The dataset is divided into five training batches and one test batch, each with 10000 images. The test batch contains exactly 1000 randomly-selected images from each class. The training batches contain the remaining images in random order, but some training batches may contain more images from one class than another. Between them, the training batches contain exactly 5000 images from each class.
+
+Here are the classes in the dataset, as well as 10 random images from each:
+
+![cifar](./assets/cifar-10.png)
+
+**CIFAR-100**.
+
+This dataset is just like the CIFAR-10, except it has **100 classes** containing 600 images each. There are 500 training images and 100 testing images per class. The 100 classes in the CIFAR-100 are grouped into 20 superclasses. Each image comes with a "fine" label (the class to which it belongs) and a "coarse" label (the superclass to which it belongs).
+Here is the list of classes in the CIFAR-100:
+
+| Superclass                     | Classes                                               |
+| ------------------------------ | ----------------------------------------------------- |
+| aquatic mammals                | beaver, dolphin, otter, seal, whale                   |
+| fish                           | aquarium fish, flatfish, ray, shark, trout            |
+| flowers                        | orchids, poppies, roses, sunflowers, tulips           |
+| food containers                | bottles, bowls, cans, cups, plates                    |
+| fruit and vegetables           | apples, mushrooms, oranges, pears, sweet peppers      |
+| household electrical devices   | clock, computer keyboard, lamp, telephone, television |
+| household furniture            | bed, chair, couch, table, wardrobe                    |
+| insects                        | bee, beetle, butterfly, caterpillar, cockroach        |
+| large carnivores               | bear, leopard, lion, tiger, wolf                      |
+| large man-made outdoor things  | bridge, castle, house, road, skyscraper               |
+| large natural outdoor scenes   | cloud, forest, mountain, plain, sea                   |
+| large omnivores and herbivores | camel, cattle, chimpanzee, elephant, kangaroo         |
+| medium-sized mammals           | fox, porcupine, possum, raccoon, skunk                |
+| non-insect invertebrates       | crab, lobster, snail, spider, worm                    |
+| people                         | baby, boy, girl, man, woman                           |
+| reptiles                       | crocodile, dinosaur, lizard, snake, turtle            |
+| small mammals                  | hamster, mouse, rabbit, shrew, squirrel               |
+| trees                          | maple, oak, palm, pine, willow                        |
+| vehicles 1                     | bicycle, bus, motorcycle, pickup truck, train         |
+| vehicles 2                     | lawn-mower, rocket, streetcar, tank, tractor          |
+
+
+
+## Training Details
+
+**Dataset.**
+
+I split the training dataset into training and validation sets, while the training dataset has 45k images, and validation dataset has 5k images. I follow the simple data augmentation in ResNet: input images are padded with 4 pixels on each side, then a 32x32 is randomly sampled from the padded image or its horizontal flip, finally normalized with per-pixel mean and standard deviation. For validation or testing, input images are just normalized with per-pixel mean and standard deviation.
+
+**Training.**
+
+I use a base learning rate of 0.1, weight decay of 0.0005, and momentum of 0.9. The models will be trained with a mini-batch size of 256 on a single Nvidia RTX 4090 GPU for 200 epochs. Besides, learning rate will be divided by 10 when the validation error plateus. During training, the checkpoints of the best model with highest validation accuracy will be saved for testing. After training, the model will be validated on testing dataset, and Top-1 Accuracy and Top-5 Accuracy will be reported.
+
 
 
 ## Implementations
@@ -16,7 +72,7 @@ Alex Krizhevsky, Ilya Sutskever, Geoffrey E. Hinton
 
 #### Abstract
 
-We trained a large, deep convolutional neural network to classify the 1.3 million high-resolution images in the LSVRC-2010 ImageNet training set into the 1000 different classes. On the test data, we achieved top-1 and top-5 error rates of 39.7\% and 18.9\% which is considerably better than the previous state-of-the-art results. The neural network, which has 60 million parameters and 500,000 neurons, consists of five convolutional layers, some of which are followed by max-pooling layers, and two globally connected layers with a final 1000-way softmax. To make training faster, we used non-saturating neurons and a very efficient GPU implementation of convolutional nets. To reduce overfitting in the globally connected layers we employed a new regularization method that proved to be very effective.
+We trained a large, deep convolutional neural network to classify the 1.3 million high-resolution images in the LSVRC-2010 ImageNet training set into the 1000 different classes. On the test data, we achieved top-1 and top-5 error rates of 39.7% and 18.9% which is considerably better than the previous state-of-the-art results. The neural network, which has 60 million parameters and 500,000 neurons, consists of five convolutional layers, some of which are followed by max-pooling layers, and two globally connected layers with a final 1000-way softmax. To make training faster, we used non-saturating neurons and a very efficient GPU implementation of convolutional nets. To reduce overfitting in the globally connected layers we employed a new regularization method that proved to be very effective.
 
 [[Paper]](https://papers.nips.cc/paper_files/paper/2012/file/c399862d3b9d6b76c8436e924a68c45b-Paper.pdf)[[Code]](./models/alexnet.py)
 
@@ -163,4 +219,3 @@ We present an interpretation of Inception modules in convolutional neural networ
 <center>
     <b>Xception Architecture</b>
 </center>
-
