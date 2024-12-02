@@ -1,6 +1,6 @@
 # Classification in PyTorch
 
-Here I implement a series of classification networks in PyTorch for fun, and I train and test the networks on CIFAR-10 and CIFAR-100 dataset. For simplicity, I don't use complex training tricks and use nearly same hyper parameters and training method to train the networks.
+Here, I implement a series of classification networks in PyTorch for fun, train and test them on the CIFAR-10 and CIFAR-100 datasets, and use the same hyperparameters and training method to train the networks. For simplicity, I don't use complex training tricks.
 
 
 
@@ -10,7 +10,7 @@ The dataset for training and testing is CIFAR, which can be directly obtained fr
 
 **CIFAR-10**.
 
-The CIFAR-10 dataset consists of **60000** 32x32 colour images in **10 classes**, with **6000 images per class**. There are **50000 training images and 10000 test images**. The dataset is divided into five training batches and one test batch, each with 10000 images. The test batch contains exactly 1000 randomly-selected images from each class. The training batches contain the remaining images in random order, but some training batches may contain more images from one class than another. Between them, the training batches contain exactly 5000 images from each class.
+The CIFAR-10 dataset consists of **60000** 32x32 color images in **10 classes**, with **6000 images per class**. There are **50000 training images and 10000 test images**. The dataset is divided into five training batches and one test batch, each with 10000 images. The test batch contains exactly 1000 randomly selected images from each class. The training batches contain the remaining images in random order, but some training batches may contain more images from one class than another. Between them, the training batches contain exactly 5000 images from each class.
 
 Here are the classes in the dataset, as well as 10 random images from each:
 
@@ -50,11 +50,24 @@ Here is the list of classes in the CIFAR-100:
 
 **Dataset.**
 
-I split the training dataset into training and validation sets, while the training dataset has 45k images, and validation dataset has 5k images. I follow the simple data augmentation in ResNet: input images are padded with 4 pixels on each side, then a 32x32 is randomly sampled from the padded image or its horizontal flip, finally normalized with per-pixel mean and standard deviation. For validation or testing, input images are just normalized with per-pixel mean and standard deviation.
+I split the training dataset into training and validation sets, the training dataset has 45k images, and the validation dataset has 5k images. I follow the simple data augmentation in ResNet: input images are padded with 4 pixels on each side, then a 32x32 is randomly sampled from the padded image or its horizontal flip and finally normalized with per-pixel mean and standard deviation. For validation or testing, input images are only normalized with per-pixel mean and standard deviation.
 
 **Training.**
 
-I use a base learning rate of 0.1, weight decay of 0.0005, and momentum of 0.9. The models will be trained with a mini-batch size of 256 on a single Nvidia RTX 4090 GPU for 200 epochs. Besides, learning rate will be divided by 10 when the validation error plateus. During training, the checkpoints of the best model with highest validation accuracy will be saved for testing. After training, the model will be validated on testing dataset, and Top-1 Accuracy and Top-5 Accuracy will be reported.
+I use a base learning rate of 0.1, weight decay of 0.0005, and momentum of 0.9. The models will be trained with a mini-batch size of 256 on a single Nvidia RTX 4090 GPU for 200 epochs. Besides, the learning rate will be divided by 10 when the validation error plateaus. During training, the checkpoints of the best model with the highest validation accuracy will be saved for testing. After training, the model will be validated on the testing dataset, and Top-1 Accuracy and Top-5 Accuracy will be reported.
+
+
+
+## Results
+
+
+
+### CIFAR-10
+
+| Model     | Params | Top 1 Accuracy | Top-5 Accuracy |
+| --------- | ------ | -------------- | -------------- |
+| ResNet-18 | 11M    | 87.85          | 99.39          |
+| ResNet-50 | 23M    | 86.23          | 99.36          |
 
 
 
