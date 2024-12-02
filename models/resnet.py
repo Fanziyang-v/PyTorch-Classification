@@ -39,6 +39,7 @@ class ResNet(nn.Module):
         self.layer4 = self._make_layer(channels[3], layers[3], block, stride=2)
         self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
         self.fc = nn.Linear(self.in_channels, num_classes)
+        self._init_weights()
 
     def forward(self, x: Tensor):
         out = self.conv1(x)
@@ -93,6 +94,17 @@ class ResNet(nn.Module):
         for _ in range(num_blocks - 1):
             layers.append(block(out_channels * block.expansion, out_channels))
         return nn.Sequential(*layers)
+
+    def _init_weights(self) -> None:
+        for m in self.modules():
+            if isinstance(m, nn.Conv2d):
+                nn.init.kaiming_normal_(m.weight, nonlinearity="relu")
+            elif isinstance(m, nn.Linear):
+                nn.init.kaiming_normal_(m.weight, nonlinearity="relu")
+                nn.init.constant_(m.bias, 0)
+            elif isinstance(m, nn.BatchNorm2d):
+                nn.init.constant_(m.weight, 1)
+                nn.init.constant_(m.bias, 0)
 
 
 class ResidualBlock(nn.Module):
