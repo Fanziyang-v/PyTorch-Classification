@@ -3,9 +3,9 @@ import argparse
 import torch
 from torch import Tensor
 from torch.utils.data import DataLoader
-import torch.utils.data
-from torchvision import datasets, transforms
+from torchvision import datasets
 from models.resnet import resnet18, resnet34, resnet50, resnet101, resnet152
+from utils.transform import dataset2transform
 
 # Device configuration
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -15,29 +15,25 @@ print(device)
 parser = argparse.ArgumentParser()
 parser.add_argument("--model", type=str, help="model type")
 parser.add_argument("--dataset", type=str, help="dataset name(cifar10 | cifar100)")
-parser.add_argument("--ckpt_dir", type=str, default="checkpoints", help="root directory for saving model checkpoints")
+parser.add_argument(
+    "--ckpt_dir",
+    type=str,
+    default="checkpoints",
+    help="root directory for saving model checkpoints",
+)
 args = parser.parse_args()
 print(args)
 
 # ================ Dataset - START ================
-transform = transforms.Compose(
-    [
-        transforms.ToTensor(),
-        transforms.Normalize(
-            mean=(0.4914, 0.4822, 0.4465), std=(0.2467, 0.2432, 0.2612)
-        ),
-    ]
-)
-if args.dataset == "cifar10":
-    num_classes = 10
-    test_dataset = datasets.CIFAR10(root="./data", train=False, transform=transform)
-elif args.dataset == "cifar100":
-    num_classes = 100
-    test_dataset = datasets.CIFAR100(root="./data", train=False, transform=transform)
-else:
+if args.dataset not in ("cifar10", "cifar100"):
     raise RuntimeError(f"Unkown dataset: {args.dataset}")
+
+num_classes = 10 if args.dataset == "cifar10" else 100
+test_dataset = datasets.CIFAR10(
+    root="./data", train=False, transform=dataset2transform[args.dataset]["test"]
+)
 test_dataloader = DataLoader(
-    dataset=test_dataset, batch_size=256, shuffle=False, num_workers=4
+    dataset=test_dataset, batch_size=128, shuffle=False, num_workers=4
 )
 # ================ Dataset - END ================
 if args.model == "resnet18":
@@ -53,7 +49,9 @@ elif args.model == "resnet152":
 else:
     raise RuntimeError(f"Unkown model: {args.model}")
 # ================ Model - START ================
-model.load_state_dict(torch.load(os.path.join(args.ckpt_dir, args.dataset, f"{args.model}_best.pth")))
+model.load_state_dict(
+    torch.load(os.path.join(args.ckpt_dir, args.dataset, f"{args.model}_best.pth"))
+)
 
 num_images = num_correct_top1 = num_correct_top5 = 0
 for images, labels in test_dataloader:
