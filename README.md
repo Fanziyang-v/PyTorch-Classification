@@ -58,16 +58,35 @@ I use a base learning rate of 0.1, weight decay of 0.0005, and momentum of 0.9. 
 
 
 
+## Run Example
+
+Here is the training example:
+
+```bash
+$ python train.py --model resnet50 --dataset cifar10
+```
+
+And the testing example:
+
+```bash
+$ python test.py --model resnet50 --dataset cifar10
+```
+
+
+
 ## Results
 
 
 
 ### CIFAR-10
 
-| Model     | Params | Top 1 Accuracy | Top-5 Accuracy |
-| --------- | ------ | -------------- | -------------- |
-| ResNet-18 | 11M    | 87.85          | 99.39          |
-| ResNet-50 | 23M    | 86.23          | 99.36          |
+| Model      | Params | Top 1 Accuracy | Top-5 Accuracy |
+| ---------- | ------ | -------------- | -------------- |
+| ResNet-18  | 11M    | 87.85          | 99.39          |
+| ResNet-34  | 21M    | 88.00          | 99.43          |
+| ResNet-50  | 23M    | 86.23          | 99.36          |
+| ResNet-101 | 42M    | 86.49          | 99.37          |
+| ResNet-152 | 58M    | 86.20          | 99.33          |
 
 
 
