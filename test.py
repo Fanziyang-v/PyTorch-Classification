@@ -1,10 +1,9 @@
 import os
 import argparse
 import torch
-from torch import nn, Tensor, optim
-from torch.utils.data import DataLoader, random_split, Dataset
+from torch import Tensor
+from torch.utils.data import DataLoader
 import torch.utils.data
-from torch.utils.tensorboard import SummaryWriter
 from torchvision import datasets, transforms
 from models.resnet import resnet18, resnet34, resnet50, resnet101, resnet152
 
@@ -12,6 +11,15 @@ from models.resnet import resnet18, resnet34, resnet50, resnet101, resnet152
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(device)
 
+# Parse commanline arguments
+parser = argparse.ArgumentParser()
+parser.add_argument("--model", type=str, help="model type")
+parser.add_argument("--dataset", type=str, help="dataset name(cifar10 | cifar100)")
+parser.add_argument("--ckpt_dir", type=str, default="checkpoints", help="root directory for saving model checkpoints")
+args = parser.parse_args()
+print(args)
+
+# ================ Dataset - START ================
 transform = transforms.Compose(
     [
         transforms.ToTensor(),
@@ -20,13 +28,32 @@ transform = transforms.Compose(
         ),
     ]
 )
-
-test_dataset = datasets.CIFAR10(root="./data", train=False, transform=transform)
+if args.dataset == "cifar10":
+    num_classes = 10
+    test_dataset = datasets.CIFAR10(root="./data", train=False, transform=transform)
+elif args.dataset == "cifar100":
+    num_classes = 100
+    test_dataset = datasets.CIFAR100(root="./data", train=False, transform=transform)
+else:
+    raise RuntimeError(f"Unkown dataset: {args.dataset}")
 test_dataloader = DataLoader(
     dataset=test_dataset, batch_size=256, shuffle=False, num_workers=4
 )
-
-model = resnet50(num_classes=10).to(device)
+# ================ Dataset - END ================
+if args.model == "resnet18":
+    model = resnet18(num_classes=num_classes).to(device)
+elif args.model == "resnet34":
+    model = resnet34(num_classes=num_classes).to(device)
+elif args.model == "resnet50":
+    model = resnet50(num_classes=num_classes).to(device)
+elif args.model == "resnet101":
+    model = resnet101(num_classes=num_classes).to(device)
+elif args.model == "resnet152":
+    model = resnet152(num_classes=num_classes).to(device)
+else:
+    raise RuntimeError(f"Unkown model: {args.model}")
+# ================ Model - START ================
+model.load_state_dict(torch.load(os.path.join(args.ckpt_dir, args.dataset, f"{args.model}_best.pth")))
 
 num_images = num_correct_top1 = num_correct_top5 = 0
 for images, labels in test_dataloader:
