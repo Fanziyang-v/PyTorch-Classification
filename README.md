@@ -1,6 +1,6 @@
 # Classification in PyTorch
 
-Here, I implement a series of classification networks in PyTorch for fun, train and test them on the CIFAR-10 and CIFAR-100 datasets, and use the same hyperparameters and training method to train the networks. For simplicity, I don't use complex training tricks.
+Here, we implement a series of classification networks in PyTorch for fun, train and test them on the CIFAR-10 and CIFAR-100 datasets, and use the same hyperparameters and training method to train the networks. For simplicity, we don't use complex training tricks.
 
 
 
@@ -94,29 +94,6 @@ $ python test.py --model resnet50 --dataset cifar10
 
 
 
-### AlexNet
-
-*ImageNet Classification with Deep Convolutional Neural Networks*
-
-#### Authors
-
-Alex Krizhevsky, Ilya Sutskever, Geoffrey E. Hinton
-
-#### Abstract
-
-We trained a large, deep convolutional neural network to classify the 1.3 million high-resolution images in the LSVRC-2010 ImageNet training set into the 1000 different classes. On the test data, we achieved top-1 and top-5 error rates of 39.7% and 18.9% which is considerably better than the previous state-of-the-art results. The neural network, which has 60 million parameters and 500,000 neurons, consists of five convolutional layers, some of which are followed by max-pooling layers, and two globally connected layers with a final 1000-way softmax. To make training faster, we used non-saturating neurons and a very efficient GPU implementation of convolutional nets. To reduce overfitting in the globally connected layers we employed a new regularization method that proved to be very effective.
-
-[[Paper]](https://papers.nips.cc/paper_files/paper/2012/file/c399862d3b9d6b76c8436e924a68c45b-Paper.pdf)[[Code]](./models/alexnet.py)
-
-Since the GTX 580 GPU has only 3GB of memory, a single GPU could not store the entire AlexNet. The implementation here is a simplified version of the original.
-
-![AlexNet](./assets/AlexNet.png)
-
-<center>
-    <b>AlexNet Architecture</b>
-</center>
-
-
 
 ### GoogLeNet
 
@@ -134,9 +111,8 @@ We propose a deep convolutional neural network architecture codenamed Inception,
 
 ![GoogLeNet](./assets/GoogLeNet.png)
 
-<center>
-    <b>GoogLeNet Architecture</b>
-</center>
+<center>GoogLeNet Architecture</center>
+
 
 
 
@@ -156,9 +132,8 @@ We present a class of efficient models called MobileNets for mobile and embedded
 
 ![MobileNetV1](./assets/MobileNetV1-architecture.png)
 
-<center>
-    <b>MobileNetV1 Architecture</b>
-</center>
+<center>MobileNetV1 Architecture</center>
+
 
 
 
@@ -184,9 +159,8 @@ Deeper neural networks are more difficult to train. We present a residual learni
 
 ![model variants](./assets/ResNet-Variants.png)
 
-<center>
-    <b>ResNet Variants</b>
-</center>
+<center>ResNet Variants</center>
+
 
 
 
@@ -206,9 +180,8 @@ In this work we investigate the effect of the convolutional network depth on its
 
 ![VGG Net Variants](./assets/VGG-Net-Variants.png)
 
-<center>
-    <b>VGGNet Variants</b>
-</center>
+<center>VGGNet Variants</center>
+
 
 
 
@@ -248,6 +221,5 @@ We present an interpretation of Inception modules in convolutional neural networ
 
 ![Xception](./assets/Xception.png)
 
-<center>
-    <b>Xception Architecture</b>
-</center>
+<center>Xception Architecture</center>
+
