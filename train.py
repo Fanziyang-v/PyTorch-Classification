@@ -7,6 +7,8 @@ import torch.utils.data
 from torch.utils.tensorboard import SummaryWriter
 from torchvision import datasets, transforms
 from models.resnet import resnet18, resnet34, resnet50, resnet101, resnet152
+from utils.dataset import DatasetWrapper
+from utils.transform import dataset2transform
 
 # Parse commanline arguments
 parser = argparse.ArgumentParser()
@@ -35,7 +37,7 @@ parser.add_argument(
     help="weight decay coefficient. defaults to 0.0005",
 )
 parser.add_argument(
-    "--batch_size", type=int, default=256, help="mini-batch size. defaults to 256"
+    "--batch_size", type=int, default=128, help="mini-batch size. defaults to 128"
 )
 parser.add_argument(
     "--model", type=str, default="resnet50", help="model name. defaults to 'resnet50'"
@@ -72,43 +74,6 @@ writer = SummaryWriter(os.path.join(args.log_dir, args.dataset, args.model))
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(device)
 
-
-# ================ Dataset - START ================
-class DatasetWrapper(Dataset):
-    def __init__(self, dataset: Dataset, transform=None) -> None:
-        self.dataset = dataset
-        self.transform = transform
-
-    def __getitem__(self, index):
-        image, label = self.dataset[index]
-        if self.transform:
-            image = self.transform(image)
-        return image, label
-
-    def __len__(self):
-        return len(self.dataset)
-
-
-# Image preprocessing
-train_transfrom = transforms.Compose(
-    [
-        transforms.RandomHorizontalFlip(),
-        transforms.RandomCrop(32, padding=4),
-        transforms.ToTensor(),
-        transforms.Normalize(
-            mean=(0.4914, 0.4822, 0.4465), std=(0.2467, 0.2432, 0.2612)
-        ),
-    ]
-)
-val_transform = transforms.Compose(
-    [
-        transforms.ToTensor(),
-        transforms.Normalize(
-            mean=(0.4914, 0.4822, 0.4465), std=(0.2467, 0.2432, 0.2612)
-        ),
-    ]
-)
-
 if args.dataset == "cifar10":
     # CIFAR-10 dataset
     num_classes = 10
@@ -121,8 +86,12 @@ elif args.dataset == "cifar100":
 train_dataset, val_dataset = random_split(full_dataset, [0.9, 0.1])
 
 # Apply different data augmentation
-train_dataset = DatasetWrapper(train_dataset, transform=train_transfrom)
-val_dataset = DatasetWrapper(val_dataset, transform=val_transform)
+train_dataset = DatasetWrapper(
+    train_dataset, transform=dataset2transform[args.dataset]["train"]
+)
+val_dataset = DatasetWrapper(
+    val_dataset, transform=dataset2transform[args.dataset]["val"]
+)
 
 # Data loader
 train_dataloader = DataLoader(
@@ -131,8 +100,6 @@ train_dataloader = DataLoader(
 val_dataloader = DataLoader(
     dataset=val_dataset, batch_size=args.batch_size, shuffle=False, num_workers=4
 )
-
-# ================ Dataset - END ================
 
 
 # ================ Model - START ================
@@ -163,8 +130,17 @@ optimizer = optim.SGD(
     momentum=args.momentum,
     weight_decay=args.weight_decay,
 )
+
+
+def lr_rule(epoch: int) -> float:
+    if epoch < 10:
+        return (epoch + 1) / 10
+    else:
+        return 0.1 ** ((epoch + 1 - 10) // 60)
+
+
 # scheduler
-scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode="min", factor=0.1)
+scheduler = optim.lr_scheduler.LambdaLR(optimizer, lr_lambda=lr_rule)
 
 
 def train():

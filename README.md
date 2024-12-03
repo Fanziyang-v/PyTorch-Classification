@@ -50,11 +50,11 @@ Here is the list of classes in the CIFAR-100:
 
 **Dataset.**
 
-I split the training dataset into training and validation sets, the training dataset has 45k images, and the validation dataset has 5k images. I follow the simple data augmentation in ResNet: input images are padded with 4 pixels on each side, then a 32x32 is randomly sampled from the padded image or its horizontal flip and finally normalized with per-pixel mean and standard deviation. For validation or testing, input images are only normalized with per-pixel mean and standard deviation.
+We split the training dataset into training and validation sets, the training dataset has 45k images, and the validation dataset has 5k images. I follow the simple data augmentation in ResNet: input images are padded with 4 pixels on each side, with a 32x32 randomly sampled from the padded image or its horizontal flip, then perform a random rotation with 15 degrees, and finally normalized with per-pixel mean and standard deviation. For testing, we only validate the single view of input images.
 
 **Training.**
 
-I use a base learning rate of 0.1, weight decay of 0.0005, and momentum of 0.9. The models will be trained with a mini-batch size of 256 on a single Nvidia RTX 4090 GPU for 200 epochs. Besides, the learning rate will be divided by 10 when the validation error plateaus. During training, the checkpoints of the best model with the highest validation accuracy will be saved for testing. After training, the model will be validated on the testing dataset, and Top-1 Accuracy and Top-5 Accuracy will be reported.
+We use a base learning rate of 0.1, weight decay of 0.0005, and momentum of 0.9. The models will be trained with a mini-batch size of 128 on a single Nvidia RTX 4090 GPU for 200 epochs. At the beginning of training, we linearly increase the learning rate to 0.1 in the first 10 epochs to warm up the training. After that, the learning rate will be divided by 10 per 60 epochs. During training, the checkpoints of the best model with the highest validation accuracy will be saved for testing. After training, the model will be validated on the testing dataset, and Top-1 Accuracy and Top-5 Accuracy will be reported.
 
 
 
@@ -80,13 +80,13 @@ $ python test.py --model resnet50 --dataset cifar10
 
 ### CIFAR-10
 
-| Model      | Params | Top 1 Accuracy | Top-5 Accuracy |
-| ---------- | ------ | -------------- | -------------- |
-| ResNet-18  | 11M    | 87.85          | 99.39          |
-| ResNet-34  | 21M    | 88.00          | 99.43          |
-| ResNet-50  | 23M    | 86.23          | 99.36          |
-| ResNet-101 | 42M    | 86.49          | 99.37          |
-| ResNet-152 | 58M    | 86.20          | 99.33          |
+| Model      | Params | Top 1 Accuracy |
+| ---------- | ------ | -------------- |
+| ResNet-18  | 11M    | 87.85          |
+| ResNet-34  | 21M    | 88.00          |
+| ResNet-50  | 23M    | 86.23          |
+| ResNet-101 | 42M    | 86.49          |
+| ResNet-152 | 58M    | 86.20          |
 
 
 
