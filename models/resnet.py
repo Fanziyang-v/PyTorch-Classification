@@ -11,7 +11,12 @@ from torch import nn, Tensor
 
 
 class ResNet(nn.Module):
-    """ResNet"""
+    """ResNet.
+    
+    In this implementation, 
+    we replace the first 7x7 conv layer of stride 2 with a 3x3 conv layer of stride 1
+    and remove the first max pooling layer, resulting in a feature map of spatial size 32x32.
+    """
 
     def __init__(
         self,
@@ -22,17 +27,9 @@ class ResNet(nn.Module):
     ) -> None:
         super(ResNet, self).__init__()
         self.in_channels = 64
-        # the first 7x7 conv with stride of 2 is replaced by three 3x3 conv
-        self.conv1 = _conv3x3(3, 64, stride=2)
+        self.conv1 = _conv3x3(3, 64)
         self.bn1 = nn.BatchNorm2d(64)
         self.relu1 = nn.ReLU(inplace=True)
-        self.conv2 = _conv3x3(64, 64)
-        self.bn2 = nn.BatchNorm2d(64)
-        self.relu2 = nn.ReLU(inplace=True)
-        self.conv3 = _conv3x3(64, 64)
-        self.bn3 = nn.BatchNorm2d(64)
-        self.relu3 = nn.ReLU(inplace=True)
-        self.maxpool = nn.MaxPool2d(kernel_size=3, stride=2, padding=1)
         self.layer1 = self._make_layer(channels[0], layers[0], block)
         self.layer2 = self._make_layer(channels[1], layers[1], block, stride=2)
         self.layer3 = self._make_layer(channels[2], layers[2], block, stride=2)
@@ -45,13 +42,6 @@ class ResNet(nn.Module):
         out = self.conv1(x)
         out = self.bn1(out)
         out = self.relu1(out)
-        out = self.conv2(out)
-        out = self.bn2(out)
-        out = self.relu2(out)
-        out = self.conv3(out)
-        out = self.bn3(out)
-        out = self.relu3(out)
-        out = self.maxpool(out)
         out = self.layer1(out)
         out = self.layer2(out)
         out = self.layer3(out)
