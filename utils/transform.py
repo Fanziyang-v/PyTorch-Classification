@@ -6,6 +6,7 @@ dataset2transform: dict[str, dict[str, transforms.Compose]] = {
             [
                 transforms.RandomHorizontalFlip(),
                 transforms.RandomCrop(32, padding=4),
+                transforms.RandomRotation(15),
                 transforms.ToTensor(),
                 transforms.Normalize(
                     mean=(0.4914, 0.4822, 0.4465), std=(0.2467, 0.2432, 0.2612)
@@ -34,9 +35,10 @@ dataset2transform: dict[str, dict[str, transforms.Compose]] = {
             [
                 transforms.RandomHorizontalFlip(),
                 transforms.RandomCrop(32, padding=4),
+                transforms.RandomRotation(15),
                 transforms.ToTensor(),
                 transforms.Normalize(
-                    mean=(0.4914, 0.4822, 0.4465), std=(0.2467, 0.2432, 0.2612)
+                    mean=(0.5070, 0.4865, 0.4409), std=(0.2669, 0.2560, 0.2756)
                 ),
             ]
         ),
@@ -44,7 +46,7 @@ dataset2transform: dict[str, dict[str, transforms.Compose]] = {
             [
                 transforms.ToTensor(),
                 transforms.Normalize(
-                    mean=(0.4914, 0.4822, 0.4465), std=(0.2467, 0.2432, 0.2612)
+                    mean=(0.5070, 0.4865, 0.4409), std=(0.2669, 0.2560, 0.2756)
                 ),
             ]
         ),
@@ -52,7 +54,7 @@ dataset2transform: dict[str, dict[str, transforms.Compose]] = {
             [
                 transforms.ToTensor(),
                 transforms.Normalize(
-                    mean=(0.4914, 0.4822, 0.4465), std=(0.2467, 0.2432, 0.2612)
+                    mean=(0.5070, 0.4865, 0.4409), std=(0.2669, 0.2560, 0.2756)
                 ),
             ]
         ),
