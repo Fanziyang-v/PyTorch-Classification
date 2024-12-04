@@ -29,9 +29,14 @@ if args.dataset not in ("cifar10", "cifar100"):
     raise RuntimeError(f"Unkown dataset: {args.dataset}")
 
 num_classes = 10 if args.dataset == "cifar10" else 100
-test_dataset = datasets.CIFAR10(
-    root="./data", train=False, transform=dataset2transform[args.dataset]["test"]
-)
+if args.dataset == "cifar10":
+    test_dataset = datasets.CIFAR10(
+        root="./data", train=False, transform=dataset2transform[args.dataset]["test"]
+    )
+else:
+    test_dataset = datasets.CIFAR100(
+        root="./data", train=False, transform=dataset2transform[args.dataset]["test"]
+    )
 test_dataloader = DataLoader(
     dataset=test_dataset, batch_size=128, shuffle=False, num_workers=4
 )
