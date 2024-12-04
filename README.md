@@ -50,7 +50,7 @@ Here is the list of classes in the CIFAR-100:
 
 **Dataset.**
 
-We split the training dataset into training and validation sets, the training dataset has 45k images, and the validation dataset has 5k images. I follow the simple data augmentation in ResNet: input images are padded with 4 pixels on each side, with a 32x32 randomly sampled from the padded image or its horizontal flip, then perform a random rotation with 15 degrees, and finally normalized with per-pixel mean and standard deviation. For testing, we only validate the single view of input images.
+We split the training dataset into training and validation sets. The training dataset has 45k images, and the validation dataset has 5k images. We perform a simple data augmentation: input images are padded with 4 pixels on each side, with a 32x32 randomly sampled from the padded image or its horizontal flip. Then, we perform a random rotation with 15 degrees and finally normalize with per-pixel mean and standard deviation. For testing, we only validate the single view of input images.
 
 **Training.**
 
@@ -82,11 +82,25 @@ $ python test.py --model resnet50 --dataset cifar10
 
 | Model      | Params | Top 1 Accuracy |
 | ---------- | ------ | -------------- |
-| ResNet-18  | 11M    | 87.85          |
-| ResNet-34  | 21M    | 88.00          |
-| ResNet-50  | 23M    | 86.23          |
-| ResNet-101 | 42M    | 86.49          |
-| ResNet-152 | 58M    | 86.20          |
+| ResNet-18  | 11M    | 90.24          |
+| ResNet-34  | 21M    | 90.85          |
+| ResNet-50  | 23M    | 89.99          |
+| ResNet-101 | 42M    | 90.01          |
+| ResNet-152 | 58M    | 90.40          |
+
+
+
+### CIFAR-100
+
+| Model      | Params | Top-1 Accuracy | Top-5 Accuracy |
+| ---------- | ------ | -------------- | -------------- |
+| ResNet-18  | 11M    | 69.04          | 88.83          |
+| ResNet-34  | 21M    | 70.16          | 89.41          |
+| ResNet-50  | 23M    | 70.63          | 89.62          |
+| ResNet-101 | 42M    | 70.98          | 89.50          |
+| ResNet-152 | 58M    | 70.70          | 89.83          |
+
+
 
 
 
