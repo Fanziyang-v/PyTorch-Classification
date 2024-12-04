@@ -80,27 +80,37 @@ $ python test.py --model resnet50 --dataset cifar10
 
 ### CIFAR-10
 
-| Model      | Params | Top 1 Accuracy |
-| ---------- | ------ | -------------- |
-| GoogLeNet  | 6M     | 90.72          |
-| ResNet-18  | 11M    | 90.34          |
-| ResNet-34  | 21M    | 90.72          |
-| ResNet-50  | 23M    | 90.53          |
-| ResNet-101 | 42M    | 90.13          |
-| ResNet-152 | 58M    | 90.37          |
+| Model       | Params | Top 1 Accuracy |
+| ----------- | ------ | -------------- |
+| GoogLeNet   | 6M     | 90.72          |
+| MobileNetV1 | 2M     | 81.27          |
+| ResNet-18   | 11M    | 90.34          |
+| ResNet-34   | 21M    | 90.72          |
+| ResNet-50   | 23M    | 90.53          |
+| ResNet-101  | 42M    | 90.13          |
+| ResNet-152  | 58M    | 90.37          |
+| VGG-11(BN)  | 28M    | 91.56          |
+| VGG-13(BN)  | 28M    | 91.81          |
+| VGG-16(BN)  | 33M    | 92.81          |
+| VGG-19(BN)  | 39M    | 92.88          |
 
 
 
 ### CIFAR-100
 
-| Model      | Params | Top-1 Accuracy | Top-5 Accuracy |
-| ---------- | ------ | -------------- | -------------- |
-| GoogLeNet  | 6M     | 68.43          | 88.68          |
-| ResNet-18  | 11M    | 69.04          | 88.83          |
-| ResNet-34  | 21M    | 70.16          | 89.41          |
-| ResNet-50  | 23M    | 70.63          | 89.62          |
-| ResNet-101 | 42M    | 70.98          | 89.50          |
-| ResNet-152 | 58M    | 70.70          | 89.83          |
+| Model       | Params | Top-1 Accuracy | Top-5 Accuracy |
+| ----------- | ------ | -------------- | -------------- |
+| GoogLeNet   | 6M     | 68.43          | 88.68          |
+| MobileNetV1 | 2M     | 51.37          | 80.19          |
+| ResNet-18   | 11M    | 69.04          | 88.83          |
+| ResNet-34   | 21M    | 70.16          | 89.41          |
+| ResNet-50   | 23M    | 70.63          | 89.62          |
+| ResNet-101  | 42M    | 70.98          | 89.50          |
+| ResNet-152  | 58M    | 70.70          | 89.83          |
+| VGG-11(BN)  | 28M    | 67.34          | 87.92          |
+| VGG-13(BN)  | 28M    | 68.37          | 88.98          |
+| VGG-16(BN)  | 33M    | 68.90          | 88.57          |
+| VGG-19(BN)  | 39M    | 67.68          | 87.33          |
 
 
 
