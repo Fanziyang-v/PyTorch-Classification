@@ -2,10 +2,10 @@ import os
 import argparse
 import torch
 from torch import nn, Tensor, optim
-from torch.utils.data import DataLoader, random_split, Dataset
+from torch.utils.data import DataLoader, random_split
 import torch.utils.data
 from torch.utils.tensorboard import SummaryWriter
-from torchvision import datasets, transforms
+from torchvision import datasets
 from models.resnet import resnet18, resnet34, resnet50, resnet101, resnet152
 from utils.dataset import DatasetWrapper
 from utils.transform import dataset2transform
@@ -218,6 +218,6 @@ for epoch in range(args.num_epochs):
         model.state_dict(),
         os.path.join(args.ckpt_dir, args.dataset, f"{args.model}_latest.pth"),
     )
-    scheduler.step(metrics=val_loss)
+    scheduler.step()
 
 # ================ Training - END ================
