@@ -17,6 +17,7 @@ class VGG(nn.Module):
     after the fifth VGG block and before the first fully connected layer,
     resulting in the spatial dimension of the output feature map is 1x1
 
+    Also, we don't use max pooling layer in the first two VGG Blocks.
     """
 
     def __init__(
@@ -33,15 +34,12 @@ class VGG(nn.Module):
             use_batchnorm (bool, optional): batchnorm will be applided if use_batchnorm is True. Defaults to False.
         """
         super(VGG, self).__init__()
-        # Unlike the original VGG Net, a global average pooling is applied
-        # after the fifth VGG block and before the first fully connected layer,
-        # resulting in the spatial dimension of the output feature map is 1x1
         self.model = nn.Sequential(
             VGGBlock(3, 64, layers[0], use_batchnorm),
             VGGBlock(64, 128, layers[1], use_batchnorm),
-            VGGBlock(128, 256, layers[2], use_batchnorm),
-            VGGBlock(256, 512, layers[3], use_batchnorm),
-            VGGBlock(512, 512, layers[4], use_batchnorm),
+            VGGBlock(128, 256, layers[2], use_batchnorm, use_pool=True),
+            VGGBlock(256, 512, layers[3], use_batchnorm, use_pool=True),
+            VGGBlock(512, 512, layers[4], use_batchnorm, use_pool=True),
             nn.AdaptiveAvgPool2d((1, 1)),
             nn.Flatten(),
             nn.Linear(512, 4096),
@@ -78,6 +76,7 @@ class VGGBlock(nn.Module):
         out_channels: int,
         num_convs: int,
         use_batchnorm: bool = False,
+        use_pool: bool = False
     ) -> None:
         """Initialize a VGG Block.
 
@@ -99,6 +98,7 @@ class VGGBlock(nn.Module):
         ]
         if use_batchnorm:
             layers.append(nn.BatchNorm2d(out_channels))
+        layers.append(nn.ReLU(inplace=True))
         for _ in range(num_convs - 1):
             layers.append(
                 nn.Conv2d(
@@ -112,7 +112,9 @@ class VGGBlock(nn.Module):
             )
             if use_batchnorm:
                 layers.append(nn.BatchNorm2d(out_channels))
-        layers.append(nn.MaxPool2d(kernel_size=2, stride=2))
+            layers.append(nn.ReLU(inplace=True))
+        if use_pool:
+            layers.append(nn.MaxPool2d(kernel_size=2, stride=2))
         self.block = nn.Sequential(*layers)
 
     def forward(self, x: Tensor):
