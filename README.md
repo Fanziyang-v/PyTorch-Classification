@@ -82,11 +82,12 @@ $ python test.py --model resnet50 --dataset cifar10
 
 | Model      | Params | Top 1 Accuracy |
 | ---------- | ------ | -------------- |
-| ResNet-18  | 11M    | 90.24          |
-| ResNet-34  | 21M    | 90.85          |
-| ResNet-50  | 23M    | 89.99          |
-| ResNet-101 | 42M    | 90.01          |
-| ResNet-152 | 58M    | 90.40          |
+| GoogLeNet  | 6M     | 90.72          |
+| ResNet-18  | 11M    | 90.34          |
+| ResNet-34  | 21M    | 90.72          |
+| ResNet-50  | 23M    | 90.53          |
+| ResNet-101 | 42M    | 90.13          |
+| ResNet-152 | 58M    | 90.37          |
 
 
 
@@ -94,6 +95,7 @@ $ python test.py --model resnet50 --dataset cifar10
 
 | Model      | Params | Top-1 Accuracy | Top-5 Accuracy |
 | ---------- | ------ | -------------- | -------------- |
+| GoogLeNet  | 6M     | 68.43          | 88.68          |
 | ResNet-18  | 11M    | 69.04          | 88.83          |
 | ResNet-34  | 21M    | 70.16          | 89.41          |
 | ResNet-50  | 23M    | 70.63          | 89.62          |
