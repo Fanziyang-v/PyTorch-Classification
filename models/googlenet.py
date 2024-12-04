@@ -16,22 +16,22 @@ from torch import Tensor
 class GoogLeNet(nn.Module):
     """GoogLeNet.
 
-    Unlike the original GoogLeNet, the first 7x7 conv with stride of 2 is replaced by three 3x3 conv.
-    Also in this implementation, batchnorm layer will be applied after each conv layer and before relu nonlinearity.
+    There are some difference between the original GoogLeNet:
+
+    - We use batch normalization to accelerate training.
+
+    - We replace the first 7x7 conv of stride 2 by a 3x3 conv of stride 1.
+
+    - We remove the max pooling layer in the first layer.
+
+    By default, we don't use auxiliary classifiers in training.
     """
 
     def __init__(self, num_classes: int, use_aux: bool = False) -> None:
         super(GoogLeNet, self).__init__()
-        self.conv1_1 = nn.Conv2d(3, 64, kernel_size=3, stride=2, padding=1, bias=False)
-        self.bn1_1 = nn.BatchNorm2d(64)
-        self.relu1_1 = nn.ReLU(inplace=True)
-        self.conv1_2 = nn.Conv2d(64, 64, kernel_size=3, padding=1, bias=False)
-        self.bn1_2 = nn.BatchNorm2d(64)
-        self.relu1_2 = nn.ReLU(inplace=True)
-        self.conv1_3 = nn.Conv2d(64, 64, kernel_size=3, padding=1, bias=False)
-        self.bn1_3 = nn.BatchNorm2d(64)
-        self.relu1_3 = nn.ReLU(inplace=True)
-        self.pool1 = nn.MaxPool2d(kernel_size=3, stride=2, padding=1)
+        self.conv1 = nn.Conv2d(3, 64, kernel_size=3, padding=1, bias=False)
+        self.bn1 = nn.BatchNorm2d(64)
+        self.relu1 = nn.ReLU(inplace=True)
 
         self.conv2 = nn.Conv2d(64, 192, kernel_size=3, padding=1, bias=False)
         self.bn2 = nn.BatchNorm2d(192)
@@ -83,15 +83,12 @@ class GoogLeNet(nn.Module):
         self._init_weights()
 
     def forward(self, images: Tensor):
-        out = self.conv1_1(images)
-        out = self.relu1_1(out)
-        out = self.conv1_2(out)
-        out = self.relu1_2(out)
-        out = self.conv1_3(out)
-        out = self.relu1_3(out)
-        out = self.pool1(out)
+        out = self.conv1(images)
+        out = self.bn1(out)
+        out = self.relu1(out)
 
         out = self.conv2(out)
+        out = self.bn2(out)
         out = self.relu2(out)
         out = self.pool2(out)
 
@@ -116,7 +113,7 @@ class GoogLeNet(nn.Module):
 
         out = out.view(out.size(0), -1)
         out = self.fc(out)
-        return out, out_aux1, out_aux2
+        return out
 
     def _init_weights(self) -> None:
         for m in self.modules():
@@ -166,7 +163,7 @@ class Inception(nn.Module):
         # branch 4(maxpool - 1x1 conv)
         self.p4_1 = nn.MaxPool2d(kernel_size=3, padding=1)
         self.p4_2 = nn.Conv2d(in_channels, c4, kernel_size=1, bias=False)
-        self.bn4_2 = nn.BatchNorm2d(c3[0])
+        self.bn4_2 = nn.BatchNorm2d(c4)
         self.relu4_2 = nn.ReLU(inplace=True)
 
     def forward(self, x: Tensor):
