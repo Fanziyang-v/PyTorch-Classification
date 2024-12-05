@@ -88,6 +88,12 @@ class MobileNetV1(nn.Module):
                 stride=2,
                 padding=1,
             ),
+            DepthwiseSaparableConv2d(
+                math.ceil(1024 * alpha),
+                math.ceil(1024 * alpha),
+                kernel_size=3,
+                padding=1,
+            ),
             nn.AdaptiveAvgPool2d((1, 1)),
             nn.Flatten(),
             nn.Linear(math.ceil(1024 * alpha), num_classes),
