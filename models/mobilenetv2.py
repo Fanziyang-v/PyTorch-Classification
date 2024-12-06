@@ -1,6 +1,8 @@
 """
 PyTorch implementation for MobileNetV2.
 
+In this implementation, we don't use width and resolution multiplier hyperparameters.
+
 For more details, see:
 [1] Mark Sandler et al.
     MobileNetV2: Inverted Residuals and Linear Bottlenecks
@@ -13,8 +15,7 @@ from torch import nn, Tensor
 class MobileNetV2(nn.Module):
     """MobileNetV2"""
 
-    def __init__(self, num_classes: int, alpha: float = 1.0, beta: float = 1.0) -> None:
-        # TODO: apply width multiplier and resolution multiplier.
+    def __init__(self, num_classes: int) -> None:
         super(MobileNetV2, self).__init__()
         self.conv1 = nn.Conv2d(3, 32, kernel_size=3, stride=2, padding=1, bias=False)
         self.bn1 = nn.BatchNorm2d(32)
@@ -31,7 +32,7 @@ class MobileNetV2(nn.Module):
         self.bn = nn.BatchNorm2d(1280)
         self.relu = nn.ReLU6(inplace=True)
         self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
-        self.fc = nn.Conv2d(1280, num_classes, kernel_size=1)
+        self.fc = nn.Conv2d(1280, num_classes, kernel_size=1, bias=False)
         self._init_weights()
 
     def forward(self, images: Tensor):
@@ -109,7 +110,7 @@ class Bottleneck(nn.Module):
             stride=stride,
             padding=1,
             groups=mid_channels,
-            bias=False
+            bias=False,
         )
         self.bn2 = nn.BatchNorm2d(mid_channels)
         self.relu2 = nn.ReLU6(inplace=True)
