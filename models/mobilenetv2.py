@@ -16,7 +16,7 @@ class MobileNetV2(nn.Module):
     def __init__(self, num_classes: int, alpha: float = 1.0, beta: float = 1.0) -> None:
         # TODO: apply width multiplier and resolution multiplier.
         super(MobileNetV2, self).__init__()
-        self.conv1 = nn.Conv2d(3, 32, kernel_size=3, stride=2, padding=1)
+        self.conv1 = nn.Conv2d(3, 32, kernel_size=3, stride=2, padding=1, bias=False)
         self.bn1 = nn.BatchNorm2d(32)
         self.relu1 = nn.ReLU6(inplace=True)
         # Bottlenecks
@@ -27,11 +27,12 @@ class MobileNetV2(nn.Module):
         self.layer5 = self._make_layer(64, 96, num_blocks=3)
         self.layer6 = self._make_layer(96, 160, num_blocks=3, stride=2)
         self.layer7 = self._make_layer(160, 320, num_blocks=1)
-        self.conv = nn.Conv2d(320, 1280, kernel_size=1)
+        self.conv = nn.Conv2d(320, 1280, kernel_size=1, bias=False)
         self.bn = nn.BatchNorm2d(1280)
         self.relu = nn.ReLU6(inplace=True)
         self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
         self.fc = nn.Conv2d(1280, num_classes, kernel_size=1)
+        self._init_weights()
 
     def forward(self, images: Tensor):
         out = self.conv1(images)
@@ -65,6 +66,17 @@ class MobileNetV2(nn.Module):
             layer.append(Bottleneck(out_channels, out_channels, expansion=expansion))
         return nn.Sequential(*layer)
 
+    def _init_weights(self) -> None:
+        for m in self.modules():
+            if isinstance(m, nn.Conv2d):
+                nn.init.kaiming_normal_(m.weight, mode="fan_out", nonlinearity="relu")
+            elif isinstance(m, nn.BatchNorm2d):
+                nn.init.ones_(m.weight)
+                nn.init.zeros_(m.bias)
+            elif isinstance(m, nn.Linear):
+                nn.init.normal_(m.weight, mean=0, std=0.01)
+                nn.init.zeros_(m.bias)
+
 
 class Bottleneck(nn.Module):
     """Bottleneck in MobileNetV2.
@@ -84,9 +96,9 @@ class Bottleneck(nn.Module):
             expansion (int, optional): expansion ratio for the first 1x1 convolution. Defaults to 6.
         """
         super(Bottleneck, self).__init__()
-        self.shortcut = nn.Conv2d(in_channels, out_channels, kernel_size=1) if stride == 1 else None
+        self.shortcut = stride == 1
         mid_channels = in_channels * expansion
-        self.conv1 = nn.Conv2d(in_channels, mid_channels, kernel_size=1)
+        self.conv1 = nn.Conv2d(in_channels, mid_channels, kernel_size=1, bias=False)
         self.bn1 = nn.BatchNorm2d(mid_channels)
         self.relu1 = nn.ReLU6(inplace=True)
         # depthwise convolution
@@ -97,10 +109,11 @@ class Bottleneck(nn.Module):
             stride=stride,
             padding=1,
             groups=mid_channels,
+            bias=False
         )
         self.bn2 = nn.BatchNorm2d(mid_channels)
         self.relu2 = nn.ReLU6(inplace=True)
-        self.conv3 = nn.Conv2d(mid_channels, out_channels, kernel_size=1)
+        self.conv3 = nn.Conv2d(mid_channels, out_channels, kernel_size=1, bias=False)
         self.bn3 = nn.BatchNorm2d(out_channels)
 
     def forward(self, x: Tensor):
@@ -113,5 +126,5 @@ class Bottleneck(nn.Module):
         out = self.conv3(out)
         out = self.bn3(out)
         if self.shortcut:
-            out += self.shortcut(x)
+            out += x
         return out
