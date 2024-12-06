@@ -1,6 +1,8 @@
 """
 PyTorch implementation for MobileNetV1.
 
+In this implementation, we don't use width and resolution multiplier hyperparameters.
+
 For more details, see:
 [1] Andrew G. Howard et al.
     MobileNets: Efficient Convolutional Neural Networks for Mobile Vision Applications. 
@@ -16,94 +18,62 @@ import math
 class MobileNetV1(nn.Module):
     """MobileNet V1."""
 
-    def __init__(
-        self,
-        num_classes: int,
-        alpha: float = 1.0,
-        beta: float = 1.0,
-    ) -> None:
-        """Initialize a MobileNetV1.
-
-        Args:
-            num_classes (int): number of classes of images.
-            alpha (float, optional): width multiplier. Defaults to 1.0.
-            beta (float, optional): resolution mutiplier. Defaults to 1.0.
-        """
+    def __init__(self, num_classes: int) -> None:
         super(MobileNetV1, self).__init__()
-        self.alpha = alpha
-        self.beta = beta
         self.model = nn.Sequential(
-            nn.Conv2d(3, math.ceil(32 * alpha), kernel_size=3, stride=2, padding=1),
-            nn.BatchNorm2d(math.ceil(32 * alpha)),
-            nn.ReLU(inplace=True),
-            DepthwiseSaparableConv2d(
-                math.ceil(32 * alpha), math.ceil(64 * alpha), kernel_size=3, padding=1
-            ),
-            DepthwiseSaparableConv2d(
-                math.ceil(64 * alpha),
-                math.ceil(128 * alpha),
-                kernel_size=3,
-                stride=2,
-                padding=1,
-            ),
-            DepthwiseSaparableConv2d(
-                math.ceil(128 * alpha), math.ceil(128 * alpha), kernel_size=3, padding=1
-            ),
-            DepthwiseSaparableConv2d(
-                math.ceil(128 * alpha),
-                math.ceil(256 * alpha),
-                kernel_size=3,
-                stride=2,
-                padding=1,
-            ),
-            DepthwiseSaparableConv2d(
-                math.ceil(256 * alpha), math.ceil(256 * alpha), kernel_size=3, padding=1
-            ),
-            DepthwiseSaparableConv2d(
-                math.ceil(256 * alpha),
-                math.ceil(512 * alpha),
-                kernel_size=3,
-                stride=2,
-                padding=1,
-            ),
-            DepthwiseSaparableConv2d(
-                math.ceil(512 * alpha), math.ceil(512 * alpha), kernel_size=3, padding=1
-            ),
-            DepthwiseSaparableConv2d(
-                math.ceil(512 * alpha), math.ceil(512 * alpha), kernel_size=3, padding=1
-            ),
-            DepthwiseSaparableConv2d(
-                math.ceil(512 * alpha), math.ceil(512 * alpha), kernel_size=3, padding=1
-            ),
-            DepthwiseSaparableConv2d(
-                math.ceil(512 * alpha), math.ceil(512 * alpha), kernel_size=3, padding=1
-            ),
-            DepthwiseSaparableConv2d(
-                math.ceil(512 * alpha), math.ceil(512 * alpha), kernel_size=3, padding=1
-            ),
-            DepthwiseSaparableConv2d(
-                math.ceil(512 * alpha),
-                math.ceil(1024 * alpha),
-                kernel_size=3,
-                stride=2,
-                padding=1,
-            ),
-            DepthwiseSaparableConv2d(
-                math.ceil(1024 * alpha),
-                math.ceil(1024 * alpha),
-                kernel_size=3,
-                padding=1,
+            nn.Conv2d(3, 32, kernel_size=3, stride=2, padding=1),
+            nn.BatchNorm2d(
+                math.ceil(32),
+                nn.ReLU(inplace=True),
+                DepthwiseSaparableConv2d(32, 64, kernel_size=3, padding=1),
+                DepthwiseSaparableConv2d(
+                    64,
+                    128,
+                    kernel_size=3,
+                    stride=2,
+                    padding=1,
+                ),
+                DepthwiseSaparableConv2d(128, 128, kernel_size=3, padding=1),
+                DepthwiseSaparableConv2d(
+                    128,
+                    256,
+                    kernel_size=3,
+                    stride=2,
+                    padding=1,
+                ),
+                DepthwiseSaparableConv2d(256, 256, kernel_size=3, padding=1),
+                DepthwiseSaparableConv2d(
+                    256,
+                    512,
+                    kernel_size=3,
+                    stride=2,
+                    padding=1,
+                ),
+                DepthwiseSaparableConv2d(512, 512, kernel_size=3, padding=1),
+                DepthwiseSaparableConv2d(512, 512, kernel_size=3, padding=1),
+                DepthwiseSaparableConv2d(512, 512, kernel_size=3, padding=1),
+                DepthwiseSaparableConv2d(512, 512, kernel_size=3, padding=1),
+                DepthwiseSaparableConv2d(512, 512, kernel_size=3, padding=1),
+                DepthwiseSaparableConv2d(
+                    512,
+                    1024,
+                    kernel_size=3,
+                    stride=2,
+                    padding=1,
+                ),
+                DepthwiseSaparableConv2d(
+                    1024,
+                    1024,
+                    kernel_size=3,
+                    padding=1,
+                ),
             ),
             nn.AdaptiveAvgPool2d((1, 1)),
             nn.Flatten(),
-            nn.Linear(math.ceil(1024 * alpha), num_classes),
+            nn.Linear(1024, num_classes),
         )
 
     def forward(self, images: Tensor):
-        if self.beta < 1.0:
-            _, _, h, w = images.size()
-            h, w = torch.ceil(torch.tensor([h, w]) * self.beta).int()
-            images = F.interpolate(images, size=(h, w), mode="bilinear")
         return self.model(images)
 
 
