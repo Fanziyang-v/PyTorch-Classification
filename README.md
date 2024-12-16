@@ -189,6 +189,23 @@ Deeper neural networks are more difficult to train. We present a residual learni
 
 
 
+### ResNeXt
+
+
+
+#### Authors
+
+Saining Xie, Ross Girshick, Piotr Dollar, Zhuowen Tu, Kaiming He.
+
+#### Abstract
+
+We present a simple, highly modularized network architecture for image classification. Our network is constructed by repeating a building block that aggregates a set of transformations with the same topology. Our simple design results in a homogeneous, multi-branch architecture that has only a few hyperparameters to set. This strategy exposes a new dimension, which we call “cardinality” (the size of the set of transformations), as an essential factor in addition to the dimensions of depth and width. On the ImageNet-1K dataset, we empirically show that even under the restricted condition of maintaining complexity, increasing cardinality is able to improve classification accuracy. Moreover, increasing cardinality is more effective than going deeper or wider when we increase the capacity. Our models, named ResNeXt, are the foundations of our entry to the ILSVRC 2016 classification task in which we secured 2nd place. We further investigate ResNeXt on an ImageNet-5K set and the COCO detection set, also showing better results than its ResNet counterpart. The code and models are publicly available online.
+
+[[Paper]](http://arxiv.org/abs/1611.05431)[[Code]](./models/resnext.py)
+
+![ResNeXt building block](./assets/ResNext-building-block-vs-ResNet-counterpart.png)
+
+
 
 ### VGGNet
 
