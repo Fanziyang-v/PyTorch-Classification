@@ -8,6 +8,7 @@ For more details, see:
     http://arxiv.org/abs/1611.05431
 """
 
+import torch
 from torch import nn, Tensor
 
 
@@ -25,7 +26,7 @@ class ResNeXt(nn.Module):
         self.in_channels = 64
         self.conv1 = nn.Conv2d(3, 64, kernel_size=3, padding=1)
         self.bn1 = nn.BatchNorm2d(64)
-        self.relu1 = nn.ReLU(inplace=True)
+        self.relu = nn.ReLU(inplace=True)
         self.layer1 = self._make_layer(channels[0], layers[0], stride=1, groups=groups)
         self.layer2 = self._make_layer(channels[1], layers[1], stride=2, groups=groups)
         self.layer3 = self._make_layer(channels[2], layers[2], stride=2, groups=groups)
@@ -34,16 +35,15 @@ class ResNeXt(nn.Module):
         self.fc = nn.Linear(self.in_channels, num_classes)
 
     def forward(self, x: Tensor):
-        batch_size = x.size()[0]
         h = self.conv1(x)
         h = self.bn1(h)
-        h = self.relu1(h)
+        h = self.relu(h)
         h = self.layer1(h)
         h = self.layer2(h)
         h = self.layer3(h)
         h = self.layer4(h)
         h = self.avgpool(h)
-        h = h.view(batch_size, -1)
+        h = torch.flatten(h, start_dim=1)
         h = self.fc(h)
         return h
 
@@ -82,7 +82,6 @@ class Bottleneck(nn.Module):
         super(Bottleneck, self).__init__()
         self.conv1 = nn.Conv2d(in_channels, out_channels, kernel_size=1)
         self.bn1 = nn.BatchNorm2d(out_channels)
-        self.relu1 = nn.ReLU(inplace=True)
         self.conv2 = nn.Conv2d(
             out_channels,
             out_channels,
@@ -92,15 +91,20 @@ class Bottleneck(nn.Module):
             groups=groups,
         )
         self.bn2 = nn.BatchNorm2d(out_channels)
-        self.relu2 = nn.ReLU(inplace=True)
         self.conv3 = nn.Conv2d(
             out_channels, out_channels * self.expansion, kernel_size=1
         )
         self.bn3 = nn.BatchNorm2d(out_channels * self.expansion)
-        self.relu3 = nn.ReLU(inplace=True)
+        self.relu = nn.ReLU(inplace=True)
         self.shortcut = (
-            nn.Conv2d(
-                in_channels, out_channels * self.expansion, kernel_size=1, stride=stride
+            nn.Sequential(
+                nn.Conv2d(
+                    in_channels,
+                    out_channels * self.expansion,
+                    kernel_size=1,
+                    stride=stride,
+                ),
+                nn.BatchNorm2d(out_channels * self.expansion),
             )
             if stride != 1 or in_channels != out_channels * self.expansion
             else nn.Identity()
@@ -109,16 +113,16 @@ class Bottleneck(nn.Module):
     def forward(self, x: Tensor):
         h = self.conv1(x)
         h = self.bn1(h)
-        h = self.relu1(h)
+        h = self.relu(h)
 
         h = self.conv2(h)
         h = self.bn2(h)
-        h = self.relu2(h)
+        h = self.relu(h)
 
         h = self.conv3(h)
         h = self.bn3(h)
         h += self.shortcut(x)
-        h = self.relu3(h)
+        h = self.relu(h)
         return h
 
 
