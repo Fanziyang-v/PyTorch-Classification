@@ -169,7 +169,7 @@ class ScaledDotProductAttention(nn.Module):
 
     def __init__(self) -> None:
         super(ScaledDotProductAttention, self).__init__()
-        self.softmax = nn.Softmax()
+        self.softmax = nn.Softmax(dim=-1)
 
     def forward(self, q: Tensor, k: Tensor, v: Tensor):
         d_k = k.size()[3]
@@ -231,31 +231,44 @@ class MultiHeadAttention(nn.Module):
         return x.transpose(1, 2).contiguous().view(batch_size, seq_length, d_model)
 
 
+def vit_small(image_size: int | tuple[int, int], num_channels: int = 3) -> ViT:
+    return ViT(
+        image_size=image_size,
+        patch_size=4,
+        num_channels=num_channels,
+        d_model=384,
+        d_hidden=1536,
+        num_blocks=6,
+        num_head=6,
+        drop_prob=0.1,
+        emb_drop_prob=0.1,
+    )
+
 def vit_base(image_size: int | tuple[int, int], num_channels: int = 3) -> ViT:
     return ViT(
         image_size=image_size,
-        patch_size=16,
+        patch_size=4,
         num_channels=num_channels,
         d_model=768,
         d_hidden=3072,
         num_blocks=12,
         num_head=12,
-        drop_prob=0.5,
-        emb_drop_prob=0.5,
+        drop_prob=0.1,
+        emb_drop_prob=0.1,
     )
 
 
 def vit_large(image_size: int | tuple[int, int], num_channels: int = 3) -> ViT:
     return ViT(
         image_size=image_size,
-        patch_size=16,
+        patch_size=4,
         num_channels=num_channels,
         d_model=1024,
         d_hidden=4096,
         num_blocks=24,
         num_head=16,
-        drop_prob=0.5,
-        emb_drop_prob=0.5,
+        drop_prob=0.1,
+        emb_drop_prob=0.1,
     )
 
 
@@ -268,6 +281,6 @@ def vit_huge(image_size: int | tuple[int, int], num_channels: int = 3) -> ViT:
         d_hidden=5120,
         num_blocks=32,
         num_head=16,
-        drop_prob=0.5,
-        emb_drop_prob=0.5,
+        drop_prob=0.1,
+        emb_drop_prob=0.1,
     )
