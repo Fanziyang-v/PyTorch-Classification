@@ -5,6 +5,11 @@ from torch import Tensor
 from torch.utils.data import DataLoader
 from torchvision import datasets
 from models.resnet import resnet18, resnet34, resnet50, resnet101, resnet152
+from models.resnext import resnext50, resnext101, resnext152
+from models.vgg import vgg11_bn, vgg13_bn, vgg16_bn, vgg19_bn
+from models.mobilenetv1 import MobileNetV1
+from models.mobilenetv2 import MobileNetV2
+from models.vit import vit_extra_small, vit_small, vit_base, vit_large, vit_huge
 from utils.transform import dataset2transform
 
 # Device configuration
@@ -51,6 +56,34 @@ elif args.model == "resnet101":
     model = resnet101(num_classes=num_classes).to(device)
 elif args.model == "resnet152":
     model = resnet152(num_classes=num_classes).to(device)
+elif args.model == "resnext50":
+    model = resnext50(num_classes=num_classes).to(device)
+elif args.model == "resnext101":
+    model = resnext101(num_classes=num_classes).to(device)
+elif args.model == "resnext152":
+    model = resnext152(num_classes=num_classes).to(device)
+elif args.model == "mobilenetv1":
+    model = MobileNetV1(num_classes=num_classes).to(device)
+elif args.model == "mobilenetv2":
+    model = MobileNetV2(num_classes=num_classes).to(device)
+elif args.model == "vgg11":
+    model = vgg11_bn(num_classes=num_classes).to(device)
+elif args.model == "vgg13":
+    model = vgg13_bn(num_classes=num_classes).to(device)
+elif args.model == "vgg16":
+    model = vgg16_bn(num_classes=num_classes).to(device)
+elif args.model == "vgg19":
+    model = vgg19_bn(num_classes=num_classes).to(device)
+elif args.model == "vit_xs":
+    model = vit_extra_small(image_size=32, num_channels=3).to(device)
+elif args.model == "vit_s":
+    model = vit_small(image_size=32, num_channels=3).to(device)
+elif args.model == "vit_base":
+    model = vit_base(image_size=32, num_channels=3).to(device)
+elif args.model == "vit_large":
+    model = vit_large(image_size=32, num_channels=3).to(device)
+elif args.model == "vit_huge":
+    model = vit_huge(image_size=32, num_channels=3).to(device)
 else:
     raise RuntimeError(f"Unkown model: {args.model}")
 # ================ Model - START ================

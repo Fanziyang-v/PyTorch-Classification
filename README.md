@@ -76,6 +76,8 @@ $ python test.py --model resnet50 --dataset cifar10
 
 ## Results
 
+We randomly sample one-tenth of the images from the training set as the validation set, and select the best model with the highest validation accuracy for evaluating on the test set. It is more reasonable to not use the test set as our validation set. Instead, we only use the test set once in our evaluation stage.
+
 
 
 ### CIFAR-10
@@ -89,10 +91,14 @@ $ python test.py --model resnet50 --dataset cifar10
 | ResNet-50   | 23M    | 90.53          |
 | ResNet-101  | 42M    | 90.13          |
 | ResNet-152  | 58M    | 90.37          |
+| ResNeXt-50  | 23M    | 90.35          |
+| ResNeXt-101 | 42M    | 90.62          |
+| ResNeXt-152 | 58M    | 90.94          |
 | VGG-11(BN)  | 28M    | 91.56          |
 | VGG-13(BN)  | 28M    | 91.81          |
 | VGG-16(BN)  | 33M    | 92.81          |
 | VGG-19(BN)  | 39M    | 92.88          |
+| Xception    | 20M    | 85.89          |
 
 
 
@@ -107,12 +113,14 @@ $ python test.py --model resnet50 --dataset cifar10
 | ResNet-50   | 23M    | 70.63          | 89.62          |
 | ResNet-101  | 42M    | 70.98          | 89.50          |
 | ResNet-152  | 58M    | 70.70          | 89.83          |
+| ResNeXt-50  | 23M    | 72.25          | 90.15          |
+| ResNeXt-101 | 42M    | 72.31          | 90.35          |
+| ResNeXt-152 | 58M    | 72.45          | 90.56          |
 | VGG-11(BN)  | 28M    | 67.34          | 87.92          |
 | VGG-13(BN)  | 28M    | 68.37          | 88.98          |
 | VGG-16(BN)  | 33M    | 68.90          | 88.57          |
 | VGG-19(BN)  | 39M    | 67.68          | 87.33          |
-
-
+| Xception    | 20M    | 56.94          | 80.87          |
 
 
 
@@ -158,8 +166,6 @@ We present a class of efficient models called MobileNets for mobile and embedded
 
 ![MobileNetV1](./assets/MobileNetV1-architecture.png)
 
-<center>MobileNetV1 Architecture</center>
-
 
 
 
@@ -179,14 +185,28 @@ Deeper neural networks are more difficult to train. We present a residual learni
 
 ![ResNet](./assets/ResNet.jpg)
 
-<center>
-    <b>Model Architecture Comparison</b>
-</center>
+
+
 
 ![model variants](./assets/ResNet-Variants.png)
 
-<center>ResNet Variants</center>
 
+
+### ResNeXt
+
+*Aggregated Residual Transformations for Deep Neural Networks*
+
+#### Authors
+
+Saining Xie, Ross Girshick, Piotr Dollar, Zhuowen Tu, Kaiming He.
+
+#### Abstract
+
+We present a simple, highly modularized network architecture for image classification. Our network is constructed by repeating a building block that aggregates a set of transformations with the same topology. Our simple design results in a homogeneous, multi-branch architecture that has only a few hyperparameters to set. This strategy exposes a new dimension, which we call “cardinality” (the size of the set of transformations), as an essential factor in addition to the dimensions of depth and width. On the ImageNet-1K dataset, we empirically show that even under the restricted condition of maintaining complexity, increasing cardinality is able to improve classification accuracy. Moreover, increasing cardinality is more effective than going deeper or wider when we increase the capacity. Our models, named ResNeXt, are the foundations of our entry to the ILSVRC 2016 classification task in which we secured 2nd place. We further investigate ResNeXt on an ImageNet-5K set and the COCO detection set, also showing better results than its ResNet counterpart. The code and models are publicly available online.
+
+[[Paper]](http://arxiv.org/abs/1611.05431)[[Code]](./models/resnext.py)
+
+![ResNeXt building block](./assets/ResNext-building-block-vs-ResNet-counterpart.png)
 
 
 
@@ -205,8 +225,6 @@ In this work we investigate the effect of the convolutional network depth on its
 [[Paper]](http://arxiv.org/abs/1409.1556)[[Code]](./models/vgg.py)
 
 ![VGG Net Variants](./assets/VGG-Net-Variants.png)
-
-<center>VGGNet Variants</center>
 
 
 
@@ -247,5 +265,5 @@ We present an interpretation of Inception modules in convolutional neural networ
 
 ![Xception](./assets/Xception.png)
 
-<center>Xception Architecture</center>
+
 
