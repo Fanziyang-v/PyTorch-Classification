@@ -128,6 +128,25 @@ We randomly sample one-tenth of the images from the training set as the validati
 
 
 
+### DenseNet
+
+*Densely Connected Convolutional Networks*
+
+#### Authors
+
+Gao Huang, Zhuang Liu, Laurens van der Maaten
+
+#### Abstract
+
+Recent work has shown that convolutional networks can be substantially deeper, more accurate, and more efficient to train if they contain shorter connections between layers close to the input and those close to the output. In this paper, we embrace this observation and introduce the Dense Convolutional Network (DenseNet), which connects each layer to every other layer in a feed-forward fashion. Whereas traditional convolutional networks with L layers have L connections—one between each layer and its subsequent layer—our network has L(L+1) / 2 direct connections. For each layer, the feature maps of all preceding layers are used as inputs, and its own feature maps are used as inputs into all subsequent layers. DenseNets have several compelling advantages: they alleviate the vanishing-gradient problem, strengthen feature propagation, encourage feature reuse, and substantially reduce the number of parameters. We evaluate our proposed architecture on four highly competitive object recognition benchmark tasks (CIFAR-10, CIFAR-100, SVHN, and ImageNet). DenseNets obtain significant improvements over the state-of-the-art on most of them, whilst requiring less computation to achieve high performance. Code and pre-trained models are available at https://github.com/liuzhuang13/DenseNet.
+
+[[Paper]](https://arxiv.org/abs/1608.06993v5)[[Code]](./models/densenet.py)
+
+![DenseBlock](./assets/DenseBlock.png)
+
+![DenseNet](./assets/DenseNet.png)
+
+
 
 ### GoogLeNet
 
