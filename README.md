@@ -82,45 +82,53 @@ We randomly sample one-tenth of the images from the training set as the validati
 
 ### CIFAR-10
 
-| Model       | Params | Top 1 Accuracy |
-| ----------- | ------ | -------------- |
-| GoogLeNet   | 6M     | 90.72          |
-| MobileNetV1 | 4M     | 80.44          |
-| ResNet-18   | 11M    | 90.34          |
-| ResNet-34   | 21M    | 90.72          |
-| ResNet-50   | 23M    | 90.53          |
-| ResNet-101  | 42M    | 90.13          |
-| ResNet-152  | 58M    | 90.37          |
-| ResNeXt-50  | 23M    | 90.35          |
-| ResNeXt-101 | 42M    | 90.62          |
-| ResNeXt-152 | 58M    | 90.94          |
-| VGG-11(BN)  | 28M    | 91.56          |
-| VGG-13(BN)  | 28M    | 91.81          |
-| VGG-16(BN)  | 33M    | 92.81          |
-| VGG-19(BN)  | 39M    | 92.88          |
-| Xception    | 20M    | 85.89          |
+| Model        | Params | Top 1 Accuracy |
+| ------------ | ------ | -------------- |
+| DenseNet-121 | 7M     | 90.50          |
+| DenseNet-169 | 14M    | 91.00          |
+| DenseNet-201 | 20M    | 91.24          |
+| DenseNet-264 | 34M    | 90.89          |
+| GoogLeNet    | 6M     | 90.72          |
+| MobileNetV1  | 4M     | 80.44          |
+| ResNet-18    | 11M    | 90.34          |
+| ResNet-34    | 21M    | 90.72          |
+| ResNet-50    | 23M    | 90.53          |
+| ResNet-101   | 42M    | 90.13          |
+| ResNet-152   | 58M    | 90.37          |
+| ResNeXt-50   | 23M    | 90.35          |
+| ResNeXt-101  | 42M    | 90.62          |
+| ResNeXt-152  | 58M    | 90.94          |
+| VGG-11(BN)   | 28M    | 91.56          |
+| VGG-13(BN)   | 28M    | 91.81          |
+| VGG-16(BN)   | 33M    | 92.81          |
+| VGG-19(BN)   | 39M    | 92.88          |
+| Xception     | 20M    | 85.89          |
 
 
 
 ### CIFAR-100
 
-| Model       | Params | Top-1 Accuracy | Top-5 Accuracy |
-| ----------- | ------ | -------------- | -------------- |
-| GoogLeNet   | 6M     | 68.43          | 88.68          |
-| MobileNetV1 | 4M     | 51.72          | 80.07          |
-| ResNet-18   | 11M    | 69.04          | 88.83          |
-| ResNet-34   | 21M    | 70.16          | 89.41          |
-| ResNet-50   | 23M    | 70.63          | 89.62          |
-| ResNet-101  | 42M    | 70.98          | 89.50          |
-| ResNet-152  | 58M    | 70.70          | 89.83          |
-| ResNeXt-50  | 23M    | 72.25          | 90.15          |
-| ResNeXt-101 | 42M    | 72.31          | 90.35          |
-| ResNeXt-152 | 58M    | 72.45          | 90.56          |
-| VGG-11(BN)  | 28M    | 67.34          | 87.92          |
-| VGG-13(BN)  | 28M    | 68.37          | 88.98          |
-| VGG-16(BN)  | 33M    | 68.90          | 88.57          |
-| VGG-19(BN)  | 39M    | 67.68          | 87.33          |
-| Xception    | 20M    | 56.94          | 80.87          |
+| Model        | Params | Top-1 Accuracy | Top-5 Accuracy |
+| ------------ | ------ | -------------- | -------------- |
+| GoogLeNet    | 6M     | 68.43          | 88.68          |
+| MobileNetV1  | 4M     | 51.72          | 80.07          |
+| ResNet-18    | 11M    | 69.04          | 88.83          |
+| ResNet-34    | 21M    | 70.16          | 89.41          |
+| ResNet-50    | 23M    | 70.63          | 89.62          |
+| ResNet-101   | 42M    | 70.98          | 89.50          |
+| ResNet-152   | 58M    | 70.70          | 89.83          |
+| ResNeXt-50   | 23M    | 72.25          | 90.15          |
+| ResNeXt-101  | 42M    | 72.31          | 90.35          |
+| ResNeXt-152  | 58M    | 72.45          | 90.56          |
+| VGG-11(BN)   | 28M    | 67.34          | 87.92          |
+| VGG-13(BN)   | 28M    | 68.37          | 88.98          |
+| VGG-16(BN)   | 33M    | 68.90          | 88.57          |
+| VGG-19(BN)   | 39M    | 67.68          | 87.33          |
+| Xception     | 20M    | 56.94          | 80.87          |
+| DenseNet-121 | 7M     | 70.57          | 89.73          |
+| DenseNet-169 | 14M    | 71.37          | 90.12          |
+| DenseNet-201 | 20M    | 71.48          | 90.04          |
+| DenseNet-264 | 34M    | 70.60          | 90.01          |
 
 
 
@@ -187,6 +195,34 @@ We present a class of efficient models called MobileNets for mobile and embedded
 
 
 
+### MobileNetV2
+
+*MobileNetV2: Inverted Residuals and Linear Bottlenecks*
+
+#### Authors
+
+Mark Sandler, Andrew Howard, Menglong Zhu, Andrey Zhmoginov, Liang-Chieh Chen
+
+#### Abstract
+
+In this paper we describe a new mobile architecture, MobileNetV2, that improves the state of the art performance of mobile models on multiple tasks and benchmarks as well as across a spectrum of different model sizes. We also describe efficient ways of applying these mobile models to object detection in a novel framework we call SSDLite. Additionally, we demonstrate how to build mobile semantic segmentation models through a reduced form of DeepLabv3 which we call Mobile DeepLabv3. 
+
+It is based on an inverted residual structure where the shortcut connections are between the thin bottleneck layers. The intermediate expansion layer uses lightweight depthwise convolutions to filter features as a source of non-linearity. Additionally, we find that it is important to remove non-linearities in the narrow layers in order to maintain representational power. We demonstrate that this improves performance and provide an intuition that led to this design. 
+
+Finally, our approach allows decoupling of the input/output domains from the expressiveness of the transformation, which provides a convenient framework for further analysis. We measure our performance on ImageNet [1] classification, COCO object detection [2], VOC image segmentation [3]. We evaluate the trade-offs between accuracy, and number of operations measured by multiply-adds (MAdd), as well as actual latency, and the number of parameters.
+
+[[Paper]](http://arxiv.org/abs/1801.04381)[[Code]](./models/mobilenetv2.py)
+
+**Linear Bottleneck.**
+
+![linear bottleneck](./assets/linear-bottleneck.png)
+
+**MobileNet Architecture.**
+
+![MobileNetV2](./assets/MobileNetV2.png)
+
+
+
 
 ### ResNet
 
@@ -226,6 +262,30 @@ We present a simple, highly modularized network architecture for image classific
 [[Paper]](http://arxiv.org/abs/1611.05431)[[Code]](./models/resnext.py)
 
 ![ResNeXt building block](./assets/ResNext-building-block-vs-ResNet-counterpart.png)
+
+
+
+### ShuffleNet
+
+*ShuffleNet: An Extremely Efficient Convolutional Neural Network for Mobile  Devices*
+
+#### Authors
+
+Xiangyu Zhang, Xinyu Zhou, Mengxiao Lin, Jian Sun
+
+#### Abstract
+
+We introduce an extremely computation-efficient CNN architecture named ShuffleNet, which is designed specially for mobile devices with very limited computing power (e.g., 10-150 MFLOPs). The new architecture utilizes two new operations, pointwise group convolution and channel shuffle, to greatly reduce computation cost while maintaining accuracy. Experiments on ImageNet classification and MS COCO object detection demonstrate the superior performance of ShuffleNet over other structures, e.g. lower top-1 error (absolute 7.8%) than recent MobileNet [12] on ImageNet classification task, under the computation budget of 40 MFLOPs. On an ARM-based mobile device, ShuffleNet achieves ∼13× actual speedup over AlexNet while maintaining comparable accuracy.
+
+[[Paper]](http://arxiv.org/abs/1707.01083)[[Code]](./models/shufflenet.py)
+
+**ShuffleNet Unit.**
+
+![ShuffleNet Unit](./assets/ShuffleNet-Unit.png)
+
+**ShuffleNet Architecture.**
+
+![ShuffleNet](./assets/ShuffleNet-Architecture.png)
 
 
 
