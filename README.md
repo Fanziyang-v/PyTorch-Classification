@@ -98,6 +98,7 @@ We randomly sample one-tenth of the images from the training set as the validati
 | ResNeXt-50   | 23M    | 90.35          |
 | ResNeXt-101  | 42M    | 90.62          |
 | ResNeXt-152  | 58M    | 90.94          |
+| ShuffleNet   | 2M     | 91.65          |
 | VGG-11(BN)   | 28M    | 91.56          |
 | VGG-13(BN)   | 28M    | 91.81          |
 | VGG-16(BN)   | 33M    | 92.81          |
@@ -120,6 +121,7 @@ We randomly sample one-tenth of the images from the training set as the validati
 | ResNeXt-50   | 23M    | 72.25          | 90.15          |
 | ResNeXt-101  | 42M    | 72.31          | 90.35          |
 | ResNeXt-152  | 58M    | 72.45          | 90.56          |
+| ShuffleNet   | 2M     | 70.40          | 91.65          |
 | VGG-11(BN)   | 28M    | 67.34          | 87.92          |
 | VGG-13(BN)   | 28M    | 68.37          | 88.98          |
 | VGG-16(BN)   | 33M    | 68.90          | 88.57          |
@@ -128,7 +130,7 @@ We randomly sample one-tenth of the images from the training set as the validati
 | DenseNet-121 | 7M     | 70.57          | 89.73          |
 | DenseNet-169 | 14M    | 71.37          | 90.12          |
 | DenseNet-201 | 20M    | 71.48          | 90.04          |
-| DenseNet-264 | 34M    | 70.60          | 90.01          |
+| DenseNet-264 | 34M    | 71.49          | 90.15          |
 
 
 
