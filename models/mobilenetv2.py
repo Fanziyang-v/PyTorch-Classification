@@ -97,7 +97,7 @@ class Bottleneck(nn.Module):
             expansion (int, optional): expansion ratio for the first 1x1 convolution. Defaults to 6.
         """
         super(Bottleneck, self).__init__()
-        self.shortcut = stride == 1
+        self.shortcut = stride == 1 and in_channels == out_channels
         mid_channels = in_channels * expansion
         self.conv1 = nn.Conv2d(in_channels, mid_channels, kernel_size=1, bias=False)
         self.bn1 = nn.BatchNorm2d(mid_channels)
