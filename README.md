@@ -1,6 +1,6 @@
-# Classification in PyTorch
+# Image Classification in PyTorch
 
-Here, we implement a series of classification networks in PyTorch for fun, train and test them on the CIFAR-10 and CIFAR-100 datasets, and use the same hyperparameters and training method to train the networks. For simplicity, we don't use complex training tricks.
+Here, we implement a series of image classification networks in PyTorch for fun, train and test them on the CIFAR-10 and CIFAR-100 datasets, and use the same hyperparameters and training method to train the networks. For simplicity, we don't use complex training tricks.
 
 
 
@@ -150,7 +150,11 @@ Recent work has shown that convolutional networks can be substantially deeper, m
 
 [[Paper]](https://arxiv.org/abs/1608.06993v5)[[Code]](./models/densenet.py)
 
+**Dense Block.**
+
 ![DenseBlock](./assets/DenseBlock.png)
+
+**DenseNet Architecture.**
 
 ![DenseNet](./assets/DenseNet.png)
 
@@ -170,9 +174,9 @@ We propose a deep convolutional neural network architecture codenamed Inception,
 
 [[Paper]](http://arxiv.org/abs/1409.4842)[[Code]](./models/googlenet.py)
 
-![GoogLeNet](./assets/GoogLeNet.png)
+**GoogLeNet Architecture.**
 
-<center>GoogLeNet Architecture</center>
+![GoogLeNet](./assets/GoogLeNet.png)
 
 
 
@@ -190,6 +194,8 @@ Andrew G. Howard, Menglong Zhu, Bo Chen, Dmitry Kalenichenko, Weijun Wang, Tobia
 We present a class of efficient models called MobileNets for mobile and embedded vision applications. MobileNets are based on a streamlined architecture that uses depthwise separable convolutions to build light weight deep neural networks. We introduce two simple global hyperparameters that efficiently trade off between latency and accuracy. These hyper-parameters allow the model builder to choose the right sized model for their application based on the constraints of the problem. We present extensive experiments on resource and accuracy tradeoffs and show strong performance compared to other popular models on ImageNet classification. We then demonstrate the effectiveness of MobileNets across a wide range of applications and use cases including object detection, finegrain classification, face attributes and large scale geo-localization.
 
 [[Paper]](http://arxiv.org/abs/1704.04861)[[Code]](./models/mobilenetv1.py)
+
+**MobileNet Architecture.**
 
 ![MobileNetV1](./assets/MobileNetV1-architecture.png)
 
@@ -238,10 +244,13 @@ Deeper neural networks are more difficult to train. We present a residual learni
 
 [[Paper]](http://arxiv.org/abs/1512.03385)[[Code]](./models/resnet.py)
 
+**ResNet vs VGG Net.**
+
 ![ResNet](./assets/ResNet.jpg)
 
 
 
+**ResNet Architectures.**
 
 ![model variants](./assets/ResNet-Variants.png)
 
@@ -260,6 +269,8 @@ Saining Xie, Ross Girshick, Piotr Dollar, Zhuowen Tu, Kaiming He.
 We present a simple, highly modularized network architecture for image classification. Our network is constructed by repeating a building block that aggregates a set of transformations with the same topology. Our simple design results in a homogeneous, multi-branch architecture that has only a few hyperparameters to set. This strategy exposes a new dimension, which we call “cardinality” (the size of the set of transformations), as an essential factor in addition to the dimensions of depth and width. On the ImageNet-1K dataset, we empirically show that even under the restricted condition of maintaining complexity, increasing cardinality is able to improve classification accuracy. Moreover, increasing cardinality is more effective than going deeper or wider when we increase the capacity. Our models, named ResNeXt, are the foundations of our entry to the ILSVRC 2016 classification task in which we secured 2nd place. We further investigate ResNeXt on an ImageNet-5K set and the COCO detection set, also showing better results than its ResNet counterpart. The code and models are publicly available online.
 
 [[Paper]](http://arxiv.org/abs/1611.05431)[[Code]](./models/resnext.py)
+
+**ResNeXt Building Blocks.**
 
 ![ResNeXt building block](./assets/ResNext-building-block-vs-ResNet-counterpart.png)
 
@@ -303,6 +314,8 @@ In this work we investigate the effect of the convolutional network depth on its
 
 [[Paper]](http://arxiv.org/abs/1409.1556)[[Code]](./models/vgg.py)
 
+**VGG Net Architecture.**
+
 ![VGG Net Variants](./assets/VGG-Net-Variants.png)
 
 
@@ -324,6 +337,8 @@ While the Transformer architecture has become the de-facto standard for natural 
 
 The code is based on the full PyTorch [[implementation]](https://github.com/lucidrains/vit-pytorch/blob/main/vit_pytorch/vit.py) for ViT and [[implementation]](https://github.com/hyunwoongko/transformer) for Transformer.
 
+**ViT Architecture.**
+
 ![ViT](./assets/ViT.png)
 
 
@@ -341,6 +356,8 @@ Francois Chollet
 We present an interpretation of Inception modules in convolutional neural networks as being an intermediate step in-between regular convolution and the depthwise separable convolution operation (a depthwise convolution followed by a pointwise convolution). In this light, a depthwise separable convolution can be understood as an Inception module with a maximally large number of towers. This observation leads us to propose a novel deep convolutional neural network architecture inspired by Inception, where Inception modules have been replaced with depthwise separable convolutions. We show that this architecture, dubbed Xception, slightly outperforms Inception V3 on the ImageNet dataset (which Inception V3 was designed for), and significantly outperforms Inception V3 on a larger image classification dataset comprising 350 million images and 17,000 classes. Since the Xception architecture has the same number of parameters as Inception V3, the performance gains are not due to increased capacity but rather to a more efficient use of model parameters.
 
 [[Paper]](http://arxiv.org/abs/1610.02357)[[Code]](./models/xception.py)
+
+**Xception Architecture.**
 
 ![Xception](./assets/Xception.png)
 
