@@ -88,8 +88,10 @@ We randomly sample one-tenth of the images from the training set as the validati
 | DenseNet-169 | 14M    | 91.00          |
 | DenseNet-201 | 20M    | 91.24          |
 | DenseNet-264 | 34M    | 90.89          |
+| EfficientNet | 4M     | 92.54          |
 | GoogLeNet    | 6M     | 90.72          |
 | MobileNetV1  | 4M     | 80.44          |
+| MobileNetV2  | 2M     | 85.22          |
 | ResNet-18    | 11M    | 90.34          |
 | ResNet-34    | 21M    | 90.72          |
 | ResNet-50    | 23M    | 90.53          |
@@ -111,8 +113,14 @@ We randomly sample one-tenth of the images from the training set as the validati
 
 | Model        | Params | Top-1 Accuracy | Top-5 Accuracy |
 | ------------ | ------ | -------------- | -------------- |
+| DenseNet-121 | 7M     | 70.57          | 89.73          |
+| DenseNet-169 | 14M    | 71.37          | 90.12          |
+| DenseNet-201 | 20M    | 71.48          | 90.04          |
+| DenseNet-264 | 34M    | 71.49          | 90.15          |
+| EfficientNet | 4M     | 73.05          | 93.11          |
 | GoogLeNet    | 6M     | 68.43          | 88.68          |
 | MobileNetV1  | 4M     | 51.72          | 80.07          |
+| MobileNetV2  | 2M     | 53.85          | 82.71          |
 | ResNet-18    | 11M    | 69.04          | 88.83          |
 | ResNet-34    | 21M    | 70.16          | 89.41          |
 | ResNet-50    | 23M    | 70.63          | 89.62          |
@@ -127,10 +135,6 @@ We randomly sample one-tenth of the images from the training set as the validati
 | VGG-16(BN)   | 33M    | 68.90          | 88.57          |
 | VGG-19(BN)   | 39M    | 67.68          | 87.33          |
 | Xception     | 20M    | 56.94          | 80.87          |
-| DenseNet-121 | 7M     | 70.57          | 89.73          |
-| DenseNet-169 | 14M    | 71.37          | 90.12          |
-| DenseNet-201 | 20M    | 71.48          | 90.04          |
-| DenseNet-264 | 34M    | 71.49          | 90.15          |
 
 
 
@@ -159,6 +163,28 @@ Recent work has shown that convolutional networks can be substantially deeper, m
 **DenseNet Architecture.**
 
 ![DenseNet](./assets/DenseNet.png)
+
+
+
+### EfficientNet
+
+*EfficientNet: Rethinking Model Scaling for Convolutional Neural Networks*
+
+#### Authors
+
+Mingxing Tan, Quoc V. Le
+
+#### Abstract
+
+Convolutional Neural Networks (ConvNets) are commonly developed at a fixed resource budget, and then scaled up for better accuracy if more resources are available. In this paper, we systematically study model scaling and identify that carefully balancing network depth, width, and resolution can lead to better performance. Based on this observation, we propose a new scaling method that uniformly scales all dimensions of depth/width/resolution using a simple yet highly effective compound coefficient. We demonstrate the effectiveness of this method on scaling up MobileNets and ResNet.  To go even further, we use neural architecture search to design a new baseline network and scale it up to obtain a family of models, called EfficientNets, which achieve much better accuracy and efficiency than previous ConvNets. In particular, our EfficientNet-B7 achieves state-of-the-art 84.3% top-1 accuracy on ImageNet, while being 8.4x smaller and 6.1x faster on inference than the best existing ConvNet. Our EfficientNets also transfer well and achieve state-of-the-art accuracy on CIFAR-100 (91.7%), Flowers (98.8%), and 3 other transfer learning datasets, with an order of magnitude fewer parameters. Source code is at https://github.com/tensorflow/tpu/tree/master/models/official/efficientnet.
+
+[[Paper]](http://arxiv.org/abs/1905.11946)[[Code]](./models/efficientnet.py)
+
+**EfficientNet B0 Architecture.**
+
+![EfficientNet](./assets/EfficientNet.png)
+
+*MBConv* denotes the *Inverted Residual Block* introduced in [MobileNetV2](http://arxiv.org/abs/1801.04381). Besides, EfficientNets inserts a squeeze-and-excitation building block introduced in [SENets](http://arxiv.org/abs/1709.01507) into *MBConv* for optimization.
 
 
 
