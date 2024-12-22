@@ -82,59 +82,69 @@ We randomly sample one-tenth of the images from the training set as the validati
 
 ### CIFAR-10
 
-| Model        | Params | Top 1 Accuracy |
-| ------------ | ------ | -------------- |
-| DenseNet-121 | 7M     | 90.50          |
-| DenseNet-169 | 14M    | 91.00          |
-| DenseNet-201 | 20M    | 91.24          |
-| DenseNet-264 | 34M    | 90.89          |
-| EfficientNet | 4M     | 92.54          |
-| GoogLeNet    | 6M     | 90.72          |
-| MobileNetV1  | 4M     | 80.44          |
-| MobileNetV2  | 2M     | 85.22          |
-| ResNet-18    | 11M    | 90.34          |
-| ResNet-34    | 21M    | 90.72          |
-| ResNet-50    | 23M    | 90.53          |
-| ResNet-101   | 42M    | 90.13          |
-| ResNet-152   | 58M    | 90.37          |
-| ResNeXt-50   | 23M    | 90.35          |
-| ResNeXt-101  | 42M    | 90.62          |
-| ResNeXt-152  | 58M    | 90.94          |
-| ShuffleNet   | 2M     | 91.65          |
-| VGG-11(BN)   | 28M    | 91.56          |
-| VGG-13(BN)   | 28M    | 91.81          |
-| VGG-16(BN)   | 33M    | 92.81          |
-| VGG-19(BN)   | 39M    | 92.88          |
-| Xception     | 20M    | 85.89          |
+| Model         | Params | Top 1 Accuracy |
+| ------------- | ------ | -------------- |
+| DenseNet-121  | 7M     | 90.50          |
+| DenseNet-169  | 14M    | 91.00          |
+| DenseNet-201  | 20M    | 91.24          |
+| DenseNet-264  | 34M    | 90.89          |
+| EfficientNet  | 4M     | 92.54          |
+| GoogLeNet     | 6M     | 90.72          |
+| MobileNetV1   | 4M     | 80.44          |
+| MobileNetV2   | 2M     | 85.22          |
+| ResNet-18     | 11M    | 90.34          |
+| ResNet-34     | 21M    | 90.72          |
+| ResNet-50     | 23M    | 90.53          |
+| ResNet-101    | 42M    | 90.13          |
+| ResNet-152    | 58M    | 90.37          |
+| ResNeXt-50    | 23M    | 90.35          |
+| ResNeXt-101   | 42M    | 90.62          |
+| ResNeXt-152   | 58M    | 90.94          |
+| SE-ResNet-18  | 11M    | 94.28          |
+| SE-ResNet-34  | 21M    | 94.65          |
+| SE-ResNet-50  | 23M    | 95.12          |
+| SE-ResNet-101 | 42M    | 95.08          |
+| SE-ResNet-152 | 58M    | 94.81          |
+| ShuffleNet    | 2M     | 91.65          |
+| VGG-11(BN)    | 28M    | 91.56          |
+| VGG-13(BN)    | 28M    | 91.81          |
+| VGG-16(BN)    | 33M    | 92.81          |
+| VGG-19(BN)    | 39M    | 92.88          |
+| Xception      | 20M    | 85.89          |
 
 
 
 ### CIFAR-100
 
-| Model        | Params | Top-1 Accuracy | Top-5 Accuracy |
-| ------------ | ------ | -------------- | -------------- |
-| DenseNet-121 | 7M     | 70.57          | 89.73          |
-| DenseNet-169 | 14M    | 71.37          | 90.12          |
-| DenseNet-201 | 20M    | 71.48          | 90.04          |
-| DenseNet-264 | 34M    | 71.49          | 90.15          |
-| EfficientNet | 4M     | 73.05          | 93.11          |
-| GoogLeNet    | 6M     | 68.43          | 88.68          |
-| MobileNetV1  | 4M     | 51.72          | 80.07          |
-| MobileNetV2  | 2M     | 53.85          | 82.71          |
-| ResNet-18    | 11M    | 69.04          | 88.83          |
-| ResNet-34    | 21M    | 70.16          | 89.41          |
-| ResNet-50    | 23M    | 70.63          | 89.62          |
-| ResNet-101   | 42M    | 70.98          | 89.50          |
-| ResNet-152   | 58M    | 70.70          | 89.83          |
-| ResNeXt-50   | 23M    | 72.25          | 90.15          |
-| ResNeXt-101  | 42M    | 72.31          | 90.35          |
-| ResNeXt-152  | 58M    | 72.45          | 90.56          |
-| ShuffleNet   | 2M     | 70.40          | 91.65          |
-| VGG-11(BN)   | 28M    | 67.34          | 87.92          |
-| VGG-13(BN)   | 28M    | 68.37          | 88.98          |
-| VGG-16(BN)   | 33M    | 68.90          | 88.57          |
-| VGG-19(BN)   | 39M    | 67.68          | 87.33          |
-| Xception     | 20M    | 56.94          | 80.87          |
+| Model         | Params | Top-1 Accuracy | Top-5 Accuracy |
+| ------------- | ------ | -------------- | -------------- |
+| DenseNet-121  | 7M     | 70.57          | 89.73          |
+| DenseNet-169  | 14M    | 71.37          | 90.12          |
+| DenseNet-201  | 20M    | 71.48          | 90.04          |
+| DenseNet-264  | 34M    | 71.49          | 90.15          |
+| EfficientNet  | 4M     | 73.05          | 93.11          |
+| GoogLeNet     | 6M     | 68.43          | 88.68          |
+| MobileNetV1   | 4M     | 51.72          | 80.07          |
+| MobileNetV2   | 2M     | 53.85          | 82.71          |
+| ResNet-18     | 11M    | 69.04          | 88.83          |
+| ResNet-34     | 21M    | 70.16          | 89.41          |
+| ResNet-50     | 23M    | 70.63          | 89.62          |
+| ResNet-101    | 42M    | 70.98          | 89.50          |
+| ResNet-152    | 58M    | 70.70          | 89.83          |
+| ResNeXt-50    | 23M    | 72.25          | 90.15          |
+| ResNeXt-101   | 42M    | 72.31          | 90.35          |
+| ResNeXt-152   | 58M    | 72.45          | 90.56          |
+| SE-ResNet-18  | 11M    | 75.44          | 92.87          |
+| SE-ResNet-34  | 21M    | 77.46          | 93.89          |
+| SE-ResNet-50  | 23m    | 78.42          | 94.35          |
+| SE-ResNet-101 | 42M    | 78.48          | 94.48          |
+| SE-ResNet-152 | 58M    | 78.95          | 95.04          |
+| ShuffleNet    | 2M     | 70.40          | 91.65          |
+| VGG-11(BN)    | 28M    | 67.34          | 87.92          |
+| VGG-13(BN)    | 28M    | 68.37          | 88.98          |
+| VGG-16(BN)    | 33M    | 68.90          | 88.57          |
+| VGG-19(BN)    | 39M    | 67.68          | 87.33          |
+| Xception      | 20M    | 56.94          | 80.87          |
 
 
 
